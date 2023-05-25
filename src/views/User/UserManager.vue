@@ -1,0 +1,236 @@
+<template>
+    <a-layout-content
+            :style="{margin: '16px'}"
+    >
+        <h2>用户管理</h2>
+        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow" >
+            <a-row justify="end">
+                <router-link to="/user/add">
+                    <a-button type="primary" style="margin: 8px; " ghost>添加用户</a-button>
+                </router-link>
+            </a-row>
+            <a-table :columns="columns" :data-source="dataSource" bordered>
+                <template
+                        #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
+                >
+                    <div style="padding: 8px">
+                        <a-input
+                                ref="searchInput"
+                                :placeholder="`Search ${column.dataIndex}`"
+                                :value="selectedKeys[0]"
+                                style="width: 188px; margin-bottom: 8px; display: block"
+                                @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+                                @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)"
+                        />
+                        <a-button
+                                type="primary"
+                                size="small"
+                                style="width: 90px; margin-right: 8px"
+                                @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+                        >
+                            <template #icon><search-outlined /></template>
+                            Search
+                        </a-button>
+                        <a-button size="small" style="width: 90px" @click="handleReset(clearFilters)">
+                            Reset
+                        </a-button>
+                    </div>
+                </template>
+                <template #bodyCell="{ column, text, record }">
+                    <template v-if="['uid', 'name', 'className', 'department'].includes(column.dataIndex)">
+                        <div>
+                            <a-input
+                                    v-if="editableData[record.key]"
+                                    v-model:value="editableData[record.key][column.dataIndex]"
+                                    style="margin: -5px 0"
+                            />
+                            <template v-else>
+                                {{ text }}
+                            </template>
+                        </div>
+                    </template>
+                    <template v-else-if="column.dataIndex === 'operation'">
+                        <div class="editable-row-operations">
+                      <span v-if="editableData[record.key]">
+                        <a-popconfirm title="确定保存?" @click="save(record.key)">
+                            <a>保存</a>
+                        </a-popconfirm>
+                        <a-typography-link @click="cancel(record.key)">取消</a-typography-link>
+                      </span>
+                      <span v-else>
+                         <a @click="edit(record.key)">编辑</a>
+                      </span>
+                      <span>
+                          <a :disabled="editableData[record.key]">修改角色</a>
+                      </span>
+                      <span>
+                        <a-popconfirm title="Sure to delete?" @confirm="deleteUser(record.key)"><a
+                                style="color: red">删除</a></a-popconfirm>
+                      </span>
+                        </div>
+                    </template>
+                </template>
+            </a-table>
+        </div>
+        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
+            管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
+        </div>
+
+    </a-layout-content>
+
+</template>
+<script>
+import {cloneDeep} from 'lodash-es';
+
+const isShow = ref(true);
+function handleResize (event) {
+    this.fullWidth = document.documentElement.clientWidth;
+    // 页面宽度小于525px时，不显示地图
+    if (this.fullWidth < 525) {
+        isShow.value = false;
+    } else {
+        isShow.value = true;
+    }
+}
+// setInterval(() => {
+//     console.log(isShow.value);
+// })
+window.addEventListener('resize', handleResize);
+
+import {defineComponent, reactive, ref, watch, onMounted} from 'vue';
+
+const data = [];
+for (let i = 0; i < 100; i++) {
+    data.push({
+        key: i.toString(),
+        name: `Edrward ${i}`,
+        uid: 22100000 + i,
+        role: "User",
+        department: "信息技术系",
+        className: "215T01",
+    });
+}
+
+
+import { SearchOutlined  } from '@ant-design/icons-vue';
+export default defineComponent({
+    components() {
+        SearchOutlined
+    },
+    setup() {
+        const dataSource = ref(data);
+        const editableData = reactive({});
+        const state = reactive({
+            searchText: '',
+            searchedColumn: '',
+        });
+
+        const searchInput = ref();
+        const edit = key => {
+            editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
+        };
+
+        const columns = [
+            {
+                title: '学籍号',
+                dataIndex: 'uid',
+                width: '20%',
+                customFilterDropdown: true,
+                onFilter: (value, record) =>
+                    record.uid.toString().toLowerCase().includes(value.toLowerCase()),
+                onFilterDropdownVisibleChange: visible => {
+                    if (visible) {
+                        setTimeout(() => {
+                            searchInput.value.focus();
+                        }, 100);
+                    }
+                },
+            },
+            {
+                title: '姓名',
+                dataIndex: 'name',
+                width: '20%',
+                customFilterDropdown: true,
+                onFilter: (value, record) =>
+                    record.name.toString().toLowerCase().includes(value.toLowerCase()),
+                onFilterDropdownVisibleChange: visible => {
+                    if (visible) {
+                        setTimeout(() => {
+                            searchInput.value.focus();
+                        }, 100);
+                    }
+                },
+            },
+            {
+                title: '班级',
+                dataIndex: 'className',
+                width: '10%',
+            },
+            {
+                title: '系部',
+                dataIndex: 'department',
+                width: '10%',
+            },
+            {
+                title: '角色',
+                dataIndex: 'role',
+                width: '20%',
+                customFilterDropdown: true,
+                onFilter: (value, record) =>
+                    record.role.toString().toLowerCase().includes(value.toLowerCase()),
+                onFilterDropdownVisibleChange: visible => {
+                    if (visible) {
+                        setTimeout(() => {
+                            searchInput.value.focus();
+                        }, 100);
+                    }
+                },
+            },
+            {
+                title: '操作',
+                dataIndex: 'operation',
+            }
+        ];
+
+        const handleSearch = (selectedKeys, confirm, dataIndex) => {
+            confirm();
+            state.searchText = selectedKeys[0];
+            state.searchedColumn = dataIndex;
+        };
+
+        const handleReset = clearFilters => {
+            clearFilters({ confirm: true });
+            state.searchText = '';
+        };
+        const deleteUser = key => {
+            alert(key);
+        };
+        const save = key => {
+            Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
+            delete editableData[key];
+        };
+        const cancel = key => {
+            delete editableData[key];
+        };
+        return {
+            dataSource,
+            columns,
+            editingKey: '',
+            editableData,
+            edit,
+            save,
+            cancel,
+            deleteUser,
+            isShow,
+            SearchOutlined,
+            handleSearch,
+            handleReset
+        };
+    },
+});
+</script>
+<style scoped>
+.editable-row-operations a {
+    margin-right: 8px;
+}
+</style>

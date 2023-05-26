@@ -97,7 +97,7 @@ function handleResize (event) {
 // })
 window.addEventListener('resize', handleResize);
 
-import {defineComponent, reactive, ref, watch, onMounted} from 'vue';
+import {defineComponent,  reactive, ref, watch, onMounted} from 'vue';
 
 const data = [];
 for (let i = 0; i < 100; i++) {
@@ -138,13 +138,6 @@ export default defineComponent({
                 customFilterDropdown: true,
                 onFilter: (value, record) =>
                     record.uid.toString().toLowerCase().includes(value.toLowerCase()),
-                onFilterDropdownVisibleChange: visible => {
-                    if (visible) {
-                        setTimeout(() => {
-                            searchInput.value.focus();
-                        }, 100);
-                    }
-                },
             },
             {
                 title: '姓名',
@@ -153,13 +146,6 @@ export default defineComponent({
                 customFilterDropdown: true,
                 onFilter: (value, record) =>
                     record.name.toString().toLowerCase().includes(value.toLowerCase()),
-                onFilterDropdownVisibleChange: visible => {
-                    if (visible) {
-                        setTimeout(() => {
-                            searchInput.value.focus();
-                        }, 100);
-                    }
-                },
             },
             {
                 title: '班级',
@@ -178,13 +164,6 @@ export default defineComponent({
                 customFilterDropdown: true,
                 onFilter: (value, record) =>
                     record.role.toString().toLowerCase().includes(value.toLowerCase()),
-                onFilterDropdownVisibleChange: visible => {
-                    if (visible) {
-                        setTimeout(() => {
-                            searchInput.value.focus();
-                        }, 100);
-                    }
-                },
             },
             {
                 title: '操作',

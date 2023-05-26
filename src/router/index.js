@@ -46,6 +46,10 @@ const router = createRouter({
             component: () => import("@/views/Equipment/EquipmentBatch.vue")
         },
         {
+            path: '/equipment/history',
+            component: () => import("@/views/Equipment/EquipmentRentHistory.vue")
+        },
+        {
             path: '/checkin/list',
             component: () => import("@/views/CheckIn/CheckInList.vue")
         },

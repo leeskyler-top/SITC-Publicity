@@ -66,6 +66,9 @@
                                 <a-menu-item key="9">设备管理</a-menu-item>
                             </router-link>
                             <a-menu-item key="10">设备申请审核</a-menu-item>
+                            <router-link to="/equipment/history">
+                                <a-menu-item key="19">设备出借历史</a-menu-item>
+                            </router-link>
                             <router-link to="/equipment/add">
                                 <a-menu-item key="11">设备添加</a-menu-item>
                             </router-link>

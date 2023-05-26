@@ -80,7 +80,7 @@ export default defineComponent({
         const columns = [
             {
                 title: '固定资产编号',
-                dataIndex: 'fixedAssetsNum',
+                dataIndex: 'fixed_assets_num',
                 width: '20%',
             },
             {
@@ -105,74 +105,74 @@ export default defineComponent({
         ];
         const dataSource = ref([
             {
-                fixedAssetsNum: 'TY20220800001',
+                fixed_assets_num: 'TY20220800001',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800002',
+                fixed_assets_num: 'TY20220800002',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800003',
+                fixed_assets_numfixed_assets_num: 'TY20220800003',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800004',
+                fixed_assets_num: 'TY20220800004',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800005',
+                fixed_assets_num: 'TY20220800005',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800006',
+                fixed_assets_num: 'TY20220800006',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
 
             {
-                fixedAssetsNum: 'TY20220800007',
+                fixed_assets_num: 'TY20220800007',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800008',
+                fixed_assets_num: 'TY20220800008',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800009',
+                fixed_assets_num: 'TY20220800009',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800010',
+                fixed_assets_num: 'TY20220800010',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800011',
+                fixed_assets_num: 'TY20220800011',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',
             },
             {
-                fixedAssetsNum: 'TY20220800012',
+                fixed_assets_num: 'TY20220800012',
                 name: '惠普Z2工作站',
                 model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
                 status: '空闲',

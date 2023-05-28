@@ -1,8 +1,46 @@
 <template>
-    <div v-if="false">
+    <div v-if="true" class="login">
+        <a-form
+            :model="formState"
+            name="basic"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+            autocomplete="off"
+            @finish="onFinish"
+            @finishFailed="onFinishFailed"
+            style="background-color: #FFFFFF;     z-index: 1;
 
+             padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; border-radius: 3px; box-shadow: #FFFFFF 0 0 1px 1px;
+"
+
+        >
+            <h2 align="center">欢迎登录</h2>
+            <a-form-item
+                label="账户"
+                name="username"
+                :rules="[{ required: true, message: '请输入账户!' }]"
+                style="margin-top: 16px;"
+            >
+                <a-input v-model:value="formState.username" />
+            </a-form-item>
+
+            <a-form-item
+                label="密码"
+                name="password"
+                :rules="[{ required: true, message: '请输入密码!' }]"
+            >
+                <a-input-password v-model:value="formState.password" />
+            </a-form-item>
+
+            <div style="display: flex; align-items: center; justify-content: center; margin-top: 16px;">
+                <a-form-item>
+                    <a-button type="primary" html-type="submit">Submit</a-button>
+                </a-form-item>
+            </div>
+
+        </a-form>
     </div>
-    <div v-if="true" style="height: 100%">
+    <div v-if="false" style="height: 100%">
         <a-layout style="min-height: 100vh">
             <a-layout-sider v-model:collapsed="collapsed" collapsible>
                 <div class="logo" :style="{height: '64px',display: 'flex', alignItems: 'center', justifyContent: 'center'}">
@@ -120,8 +158,9 @@
 </template>
 
 <script>
-import {CalendarOutlined ,DashboardOutlined, ToolOutlined, UserOutlined, CarryOutOutlined, FileOutlined} from '@ant-design/icons-vue';
-import {defineComponent, ref} from 'vue';
+import {CalendarOutlined ,DashboardOutlined, ToolOutlined, UserOutlined, LockOutlined, CarryOutOutlined, FileOutlined} from '@ant-design/icons-vue';
+import {defineComponent, ref, computed, reactive} from 'vue';
+
 
 export default defineComponent({
     components: {
@@ -129,7 +168,8 @@ export default defineComponent({
         ToolOutlined,
         UserOutlined,
         CalendarOutlined,
-        CarryOutOutlined
+        CarryOutOutlined,
+        LockOutlined
     },
     data() {
         return {
@@ -137,7 +177,32 @@ export default defineComponent({
             selectedKeys: ref(['1']),
         };
     },
+    setup() {
+        const formState = reactive({
+            username: '',
+            password: '',
+        });
+        const onFinish = values => {
+            console.log('Success:', values);
+        };
+        const onFinishFailed = errorInfo => {
+            console.log('Failed:', errorInfo);
+        };
+        const disabled = computed(() => {
+            return !(formState.username && formState.password);
+        });
+
+        return {
+            formState,
+            onFinish,
+            onFinishFailed,
+            disabled
+        }
+    }
 });
+
+
+
 </script>
 
 <style>
@@ -165,4 +230,28 @@ export default defineComponent({
         display: none;
     }
 }
+
+.login {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-image: url("@/assets/imgs/Login_container_bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: blur(8px);
+
+}
+
 </style>

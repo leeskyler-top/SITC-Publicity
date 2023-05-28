@@ -1,7 +1,6 @@
 <script setup>
-import {defineComponent} from "vue";
-import {InboxOutlined, UploadOutlined} from "@ant-design/icons-vue";
 import {reactive} from "vue";
+import {UploadOutlined} from "@ant-design/icons-vue";
 
 const formItemLayout = {
     labelCol: {

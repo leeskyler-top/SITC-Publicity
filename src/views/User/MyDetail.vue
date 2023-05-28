@@ -75,12 +75,8 @@
 
 </template>
 <script setup>
-import {defineComponent, reactive, ref, toRefs, watch} from 'vue';
+import {reactive, ref} from 'vue';
 import {
-    MailOutlined,
-    CalendarOutlined,
-    AppstoreOutlined,
-    SettingOutlined,
     InfoCircleOutlined,
     LockOutlined
 } from '@ant-design/icons-vue';

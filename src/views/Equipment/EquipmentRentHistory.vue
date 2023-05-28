@@ -49,8 +49,9 @@
     </a-layout-content>
 
 </template>
-<script>
+<script setup>
 import {cloneDeep} from 'lodash-es';
+import {reactive, ref, onMounted} from 'vue';
 
 const isShow = ref(true);
 function handleResize (event) {
@@ -62,12 +63,8 @@ function handleResize (event) {
         isShow.value = true;
     }
 }
-// setInterval(() => {
-//     console.log(isShow.value);
-// })
 window.addEventListener('resize', handleResize);
 
-import {defineComponent, reactive, ref, watch, onMounted, computed} from 'vue';
 
 const data = [];
 for (let i = 0; i < 100; i++) {
@@ -86,157 +83,138 @@ for (let i = 0; i < 100; i++) {
     });
 }
 
+const dataSource = ref(data);
+const editableData = reactive({});
+const state = reactive({
+    searchText: '',
+    searchedColumn: '',
+});
+
+const searchInput = ref('');
+const columns = [
+    {
+        title: '固定资产编号',
+        dataIndex: 'fixed_assets_num',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.fixed_assets_num.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '设备名称',
+        dataIndex: 'name',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.name.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+
+    {
+        title: '设备型号',
+        dataIndex: 'model',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.name.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+
+    {
+        title: '申请人学籍号',
+        dataIndex: 'apply_uid',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.apply_uid.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '申请人姓名',
+        dataIndex: 'apply_name',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.apply_name.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '审批人学籍号',
+        dataIndex: 'audit_uid',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.audit_uid.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '审批人姓名',
+        dataIndex: 'audit_name',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.audit_name.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '要求时间',
+        dataIndex: 'apply_time',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.apply_time.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '审批时间',
+        dataIndex: 'audit_time',
+        width: '10%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.audit_time.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '条目状态',
+        dataIndex: 'status',
+        width: '5%',
+        onFilter: (value, record) =>
+            record.status.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '归还状态',
+        dataIndex: 'return_status',
+        width: '5%',
+        onFilter: (value, record) =>
+            record.return_status.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+];
+
+const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    state.searchText = selectedKeys[0];
+    state.searchedColumn = dataIndex;
+};
+
+const handleReset = clearFilters => {
+    clearFilters({ confirm: true });
+    state.searchText = '';
+};
+const count = computed(() => dataSource.value.length + 1);
+const edit = key => {
+    editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
+};
+const save = key => {
+    Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
+    delete editableData[key];
+};
+const onDelete = key => {
+    dataSource.value = dataSource.value.filter(item => item.key !== key);
+};
+const handleAdd = () => {
+    const newData = {
+        key: `${count.value}`,
+        name: `Edward King ${count.value}`,
+        age: 32,
+        address: `London, Park Lane no. ${count.value}`,
+    };
+    dataSource.value.push(newData);
+};
 
 import { SearchOutlined  } from '@ant-design/icons-vue';
-export default defineComponent({
-    components() {
-        SearchOutlined
-    },
-    setup() {
-        const dataSource = ref(data);
-        const editableData = reactive({});
-        const state = reactive({
-            searchText: '',
-            searchedColumn: '',
-        });
 
-        const searchInput = ref('');
-        const columns = [
-            {
-                title: '固定资产编号',
-                dataIndex: 'fixed_assets_num',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.fixed_assets_num.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '设备名称',
-                dataIndex: 'name',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.name.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-
-            {
-                title: '设备型号',
-                dataIndex: 'model',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.name.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-
-            {
-                title: '申请人学籍号',
-                dataIndex: 'apply_uid',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.apply_uid.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '申请人姓名',
-                dataIndex: 'apply_name',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.apply_name.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '审批人学籍号',
-                dataIndex: 'audit_uid',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.audit_uid.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '审批人姓名',
-                dataIndex: 'audit_name',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.audit_name.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '要求时间',
-                dataIndex: 'apply_time',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.apply_time.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '审批时间',
-                dataIndex: 'audit_time',
-                width: '10%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.audit_time.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '条目状态',
-                dataIndex: 'status',
-                width: '5%',
-                onFilter: (value, record) =>
-                    record.status.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '归还状态',
-                dataIndex: 'return_status',
-                width: '5%',
-                onFilter: (value, record) =>
-                    record.return_status.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-        ];
-
-        const handleSearch = (selectedKeys, confirm, dataIndex) => {
-            confirm();
-            state.searchText = selectedKeys[0];
-            state.searchedColumn = dataIndex;
-        };
-
-        const handleReset = clearFilters => {
-            clearFilters({ confirm: true });
-            state.searchText = '';
-        };
-        const count = computed(() => dataSource.value.length + 1);
-        const edit = key => {
-            editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
-        };
-        const save = key => {
-            Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
-            delete editableData[key];
-        };
-        const onDelete = key => {
-            dataSource.value = dataSource.value.filter(item => item.key !== key);
-        };
-        const handleAdd = () => {
-            const newData = {
-                key: `${count.value}`,
-                name: `Edward King ${count.value}`,
-                age: 32,
-                address: `London, Park Lane no. ${count.value}`,
-            };
-            dataSource.value.push(newData);
-        };
-        return {
-            columns,
-            isShow,
-            onDelete,
-            handleAdd,
-            dataSource,
-            editableData,
-            handleSearch,
-            handleReset,
-            count,
-            edit,
-            save,
-        };
-    },
-});
 </script>
 <style scoped>
 .editable-row-operations a {

@@ -1,7 +1,6 @@
 <script setup>
-import {defineComponent, ref} from "vue";
-import {InboxOutlined, UploadOutlined} from "@ant-design/icons-vue";
-import {reactive} from "vue";
+import {ref} from "vue";
+import {InboxOutlined} from "@ant-design/icons-vue";
 
 const fileList = ref([]);
 const uploading = ref(false);

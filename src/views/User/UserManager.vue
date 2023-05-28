@@ -79,14 +79,15 @@
     </a-layout-content>
 
 </template>
-<script>
+<script setup>
+import {reactive, ref, onMounted} from 'vue';
 import {cloneDeep} from 'lodash-es';
+import { SearchOutlined  } from '@ant-design/icons-vue';
 
 const isShow = ref(true);
 function handleResize (event) {
-    this.fullWidth = document.documentElement.clientWidth;
     // 页面宽度小于525px时，不显示地图
-    if (this.fullWidth < 525) {
+    if (document.documentElement.clientWidth < 525) {
         isShow.value = false;
     } else {
         isShow.value = true;
@@ -97,7 +98,6 @@ function handleResize (event) {
 // })
 window.addEventListener('resize', handleResize);
 
-import {defineComponent,  reactive, ref, watch, onMounted} from 'vue';
 
 const data = [];
 for (let i = 0; i < 100; i++) {
@@ -111,102 +111,80 @@ for (let i = 0; i < 100; i++) {
     });
 }
 
-
-import { SearchOutlined  } from '@ant-design/icons-vue';
-export default defineComponent({
-    components() {
-        SearchOutlined
-    },
-    setup() {
-        const dataSource = ref(data);
-        const editableData = reactive({});
-        const state = reactive({
-            searchText: '',
-            searchedColumn: '',
-        });
-
-        const searchInput = ref();
-        const edit = key => {
-            editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
-        };
-
-        const columns = [
-            {
-                title: '学籍号',
-                dataIndex: 'uid',
-                width: '20%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.uid.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '姓名',
-                dataIndex: 'name',
-                width: '20%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.name.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '班级',
-                dataIndex: 'className',
-                width: '10%',
-            },
-            {
-                title: '系部',
-                dataIndex: 'department',
-                width: '10%',
-            },
-            {
-                title: '角色',
-                dataIndex: 'role',
-                width: '20%',
-                customFilterDropdown: true,
-                onFilter: (value, record) =>
-                    record.role.toString().toLowerCase().includes(value.toLowerCase()),
-            },
-            {
-                title: '操作',
-                dataIndex: 'operation',
-            }
-        ];
-
-        const handleSearch = (selectedKeys, confirm, dataIndex) => {
-            confirm();
-            state.searchText = selectedKeys[0];
-            state.searchedColumn = dataIndex;
-        };
-
-        const handleReset = clearFilters => {
-            clearFilters({ confirm: true });
-            state.searchText = '';
-        };
-        const deleteUser = key => {
-            alert(key);
-        };
-        const save = key => {
-            Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
-            delete editableData[key];
-        };
-        const cancel = key => {
-            delete editableData[key];
-        };
-        return {
-            dataSource,
-            columns,
-            editingKey: '',
-            editableData,
-            edit,
-            save,
-            cancel,
-            deleteUser,
-            isShow,
-            SearchOutlined,
-            handleSearch,
-            handleReset
-        };
-    },
+const dataSource = ref(data);
+const editableData = reactive({});
+const state = reactive({
+    searchText: '',
+    searchedColumn: '',
 });
+
+const searchInput = ref();
+const edit = key => {
+    editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
+};
+
+const columns = [
+    {
+        title: '学籍号',
+        dataIndex: 'uid',
+        width: '20%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.uid.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '姓名',
+        dataIndex: 'name',
+        width: '20%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.name.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '班级',
+        dataIndex: 'className',
+        width: '10%',
+    },
+    {
+        title: '系部',
+        dataIndex: 'department',
+        width: '10%',
+    },
+    {
+        title: '角色',
+        dataIndex: 'role',
+        width: '20%',
+        customFilterDropdown: true,
+        onFilter: (value, record) =>
+            record.role.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '操作',
+        dataIndex: 'operation',
+    }
+];
+
+const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    state.searchText = selectedKeys[0];
+    state.searchedColumn = dataIndex;
+};
+
+const handleReset = clearFilters => {
+    clearFilters({ confirm: true });
+    state.searchText = '';
+};
+const deleteUser = key => {
+    alert(key);
+};
+const save = key => {
+    Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
+    delete editableData[key];
+};
+const cancel = key => {
+    delete editableData[key];
+};
+
 </script>
 <style scoped>
 .editable-row-operations a {

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="true" class="login">
+    <div v-if="false" class="login">
         <a-form
             :model="formState"
             name="basic"
@@ -15,6 +15,7 @@
 
         >
             <h2 align="center">欢迎登录</h2>
+            <p align="center">SITC 团委学生会 宣传部</p>
             <a-form-item
                 label="账户"
                 name="username"
@@ -40,7 +41,7 @@
 
         </a-form>
     </div>
-    <div v-if="false" style="height: 100%">
+    <div v-if="true" style="height: 100%">
         <a-layout style="min-height: 100vh">
             <a-layout-sider v-model:collapsed="collapsed" collapsible>
                 <div class="logo" :style="{height: '64px',display: 'flex', alignItems: 'center', justifyContent: 'center'}">
@@ -157,51 +158,25 @@
 
 </template>
 
-<script>
+<script setup>
 import {CalendarOutlined ,DashboardOutlined, ToolOutlined, UserOutlined, LockOutlined, CarryOutOutlined, FileOutlined} from '@ant-design/icons-vue';
-import {defineComponent, ref, computed, reactive} from 'vue';
-
-
-export default defineComponent({
-    components: {
-        DashboardOutlined,
-        ToolOutlined,
-        UserOutlined,
-        CalendarOutlined,
-        CarryOutOutlined,
-        LockOutlined
-    },
-    data() {
-        return {
-            collapsed: ref(true),
-            selectedKeys: ref(['1']),
-        };
-    },
-    setup() {
-        const formState = reactive({
-            username: '',
-            password: '',
-        });
-        const onFinish = values => {
-            console.log('Success:', values);
-        };
-        const onFinishFailed = errorInfo => {
-            console.log('Failed:', errorInfo);
-        };
-        const disabled = computed(() => {
-            return !(formState.username && formState.password);
-        });
-
-        return {
-            formState,
-            onFinish,
-            onFinishFailed,
-            disabled
-        }
-    }
+import {ref, computed, reactive} from 'vue';
+const formState = reactive({
+    username: '',
+    password: '',
+});
+const onFinish = values => {
+    console.log('Success:', values);
+};
+const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+};
+const disabled = computed(() => {
+    return !(formState.username && formState.password);
 });
 
-
+const collapsed = ref(true);
+const selectedKeys = ref(['1']);
 
 </script>
 

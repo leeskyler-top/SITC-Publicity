@@ -62,8 +62,9 @@ import {cloneDeep} from 'lodash-es';
     屏幕宽度判断
  */
 const isShow = ref(true);
+
 function handleResize (event) {
-    // 页面宽度小于525px时，不显示地图
+    // 页面宽度小于525px时，不显示表格
     if (document.documentElement.clientWidth < 525) {
         isShow.value = false;
     } else {
@@ -75,6 +76,8 @@ onMounted(() => {
     console.log(1);
     handleResize();
 });
+
+window.addEventListener('resize', handleResize);
 
 const columns = [
     {

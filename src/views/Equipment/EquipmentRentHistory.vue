@@ -55,14 +55,19 @@ import {reactive, ref, onMounted} from 'vue';
 
 const isShow = ref(true);
 function handleResize (event) {
-    this.fullWidth = document.documentElement.clientWidth;
     // 页面宽度小于525px时，不显示表格
-    if (this.fullWidth < 525) {
+    if (document.documentElement.clientWidth < 525) {
         isShow.value = false;
     } else {
         isShow.value = true;
     }
 }
+
+onMounted(() => {
+    console.log(1);
+    handleResize();
+});
+
 window.addEventListener('resize', handleResize);
 
 

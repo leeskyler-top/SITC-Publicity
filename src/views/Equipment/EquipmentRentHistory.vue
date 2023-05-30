@@ -51,7 +51,7 @@
 </template>
 <script setup>
 import {cloneDeep} from 'lodash-es';
-import {reactive, ref, onMounted} from 'vue';
+import {reactive, ref, onMounted, computed} from 'vue';
 
 const isShow = ref(true);
 function handleResize (event) {
@@ -64,7 +64,6 @@ function handleResize (event) {
 }
 
 onMounted(() => {
-    console.log(1);
     handleResize();
 });
 

@@ -2,37 +2,10 @@
 import {ref} from "vue";
 import {Empty} from "ant-design-vue";
 
-const data = [];
-
-for (let i = 1; i < 2; i++) {
-    data.push({
-        id: i,
-    })
-    data.push({
-        id: i,
-        type: '电子设备',
-        name: '单反相机',
-        model: 'Canon EOS 77D',
-        apply_date: '2023-05-19 14:43:00'
-    })
-    data.push({
-        id: i,
-        type: '电子设备',
-        name: '单反相机',
-        model: 'Canon EOS Mark 5D IV',
-        apply_date: '2023-05-19 14:43:00'
-    })
-    data.push({
-        id: i,
-        type: '电子设备',
-        name: '单反相机',
-        model: 'Canon EOS 400D',
-        apply_date: '2023-05-19 14:43:00'
-    })
-}
-
 const current = ref(1);
 
+const data = [];
+data.push(1);
 
 function enroll(id) {
     alert(id);

@@ -34,6 +34,10 @@ const router = createRouter({
             component: () => import("@/views/Equipment/EquipmentApply.vue")
         },
         {
+            path: '/equipment/audit',
+            component: () => import("@/views/Equipment/EquipmentAudit.vue")
+        },
+        {
             path: '/equipment/manager',
             component: () => import("@/views/Equipment/EquipmentManager.vue")
         },
@@ -55,7 +59,12 @@ const router = createRouter({
         },
         {
             path: '/activity/manager',
-            component: () => import("@/views/CheckIn/CheckInManager.vue")        },
+            component: () => import("@/views/CheckIn/CheckInManager.vue")
+        },
+        {
+            path: '/activity/add',
+            component: () => import("@/views/Activity/ActivityAdd.vue")
+        },
         {
             path: '/activity/list',
             component: () => import("@/views/Activity/ActivityList.vue")

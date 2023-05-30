@@ -95,7 +95,6 @@ function handleResize (event) {
 }
 
 onMounted(() => {
-    console.log(1);
     handleResize();
 });
 

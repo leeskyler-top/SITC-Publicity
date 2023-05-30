@@ -73,7 +73,6 @@ function handleResize (event) {
 }
 
 onMounted(() => {
-    console.log(1);
     handleResize();
 });
 
@@ -110,7 +109,8 @@ const dataSource = ref([
         fixed_assets_num: 'TY20220800001',
         name: '惠普Z2工作站',
         model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
-        status: '空闲',
+        status: '出借',
+
     },
     {
         fixed_assets_num: 'TY20220800002',
@@ -119,7 +119,7 @@ const dataSource = ref([
         status: '空闲',
     },
     {
-        fixed_assets_numfixed_assets_num: 'TY20220800003',
+        fixed_assets_num: 'TY20220800003',
         name: '惠普Z2工作站',
         model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
         status: '空闲',

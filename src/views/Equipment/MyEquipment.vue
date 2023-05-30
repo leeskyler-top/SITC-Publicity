@@ -6,33 +6,19 @@ const data = [];
 
 for (let i = 1; i < 2; i++) {
     data.push({
-        id: i,
-        type: '电子设备',
-        name: '单反相机',
-        model: 'Canon EOS 80D',
-        apply_date: '2023-05-19 14:43:00'
-    })
-    // data.push({
-    //     id: i,
-    //     type: '电子设备',
-    //     name: '单反相机',
-    //     model: 'Canon EOS 77D',
-    //     apply_date: '2023-05-19 14:43:00'
-    // })
-    // data.push({
-    //     id: i,
-    //     type: '电子设备',
-    //     name: '单反相机',
-    //     model: 'Canon EOS Mark 5D IV',
-    //     apply_date: '2023-05-19 14:43:00'
-    // })
-    // data.push({
-    //     id: i,
-    //     type: '电子设备',
-    //     name: '单反相机',
-    //     model: 'Canon EOS 400D',
-    //     apply_date: '2023-05-19 14:43:00'
-    // })
+        fixed_assets_num: "TY20220800001",
+        name: '惠普Z2工作站',
+        model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+        apply_date: '2023-05-19 14:43:00',
+        status: "出借"
+    });
+    data.push({
+        fixed_assets_num: "TY20220800002",
+        name: '惠普Z2工作站',
+        model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+        apply_date: '2023-05-19 14:43:00',
+        status: "已拒绝"
+    });
 }
 
 const current = ref(1);
@@ -65,11 +51,12 @@ function brokeEquipment(id) {
 
             <a-descriptions v-for="item in data" title="借条"
                             style="background-color: #FFFFFF; padding: 16px; box-sizing: border-box;">
-                <a-descriptions-item label="设备ID">{{ item.id }}</a-descriptions-item>
+                <a-descriptions-item label="固定资产编号">{{ item.fixed_assets_num }}</a-descriptions-item>
                 <a-descriptions-item label="设备名称">{{ item.name }}</a-descriptions-item>
                 <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
                 <a-descriptions-item label="申请时间">{{ item.apply_date }}</a-descriptions-item>
-                <a-descriptions-item label="操作">
+                <a-descriptions-item label="状态">{{ item.status }}</a-descriptions-item>
+                <a-descriptions-item label="操作" v-if="item.status === '出借'">
                         <a-row style="gap: 5px;">
                                 <a-col>
                                     <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">归还申报</a-button>

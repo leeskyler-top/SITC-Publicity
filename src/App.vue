@@ -104,7 +104,9 @@
                             <router-link to="/equipment/manager">
                                 <a-menu-item key="9">设备管理</a-menu-item>
                             </router-link>
-                            <a-menu-item key="10">设备申请审核</a-menu-item>
+                            <router-link to="/equipment/audit">
+                                <a-menu-item key="10">设备申请审核</a-menu-item>
+                            </router-link>
                             <router-link to="/equipment/history">
                                 <a-menu-item key="19">设备出借历史</a-menu-item>
                             </router-link>
@@ -128,7 +130,9 @@
                         </router-link>
                         <div v-if="true">
                             <a-menu-item key="14">活动管理</a-menu-item>
-                            <a-menu-item key="15">活动添加</a-menu-item>
+                            <router-link to="/activity/add">
+                                <a-menu-item key="15">活动添加</a-menu-item>
+                            </router-link>
                             <a-menu-item key="16">报名审核</a-menu-item>
                         </div>
                     </a-sub-menu>

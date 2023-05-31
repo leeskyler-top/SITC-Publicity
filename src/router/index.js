@@ -58,7 +58,7 @@ const router = createRouter({
             component: () => import("@/views/CheckIn/CheckInList.vue")
         },
         {
-            path: '/activity/manager',
+            path: '/checkin/manager',
             component: () => import("@/views/CheckIn/CheckInManager.vue")
         },
         {
@@ -68,6 +68,10 @@ const router = createRouter({
         {
             path: '/activity/list',
             component: () => import("@/views/Activity/ActivityList.vue")
+        },
+        {
+            path: '/activity/manager',
+            component: () => import("@/views/Activity/ActivityManager.vue")
         }
     ]
 })

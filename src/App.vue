@@ -129,7 +129,9 @@
                             <a-menu-item key="13">活动列表</a-menu-item>
                         </router-link>
                         <div v-if="true">
-                            <a-menu-item key="14">活动管理</a-menu-item>
+                            <router-link to="/activity/manager">
+                                <a-menu-item key="14">活动管理</a-menu-item>
+                            </router-link>
                             <router-link to="/activity/add">
                                 <a-menu-item key="15">活动添加</a-menu-item>
                             </router-link>

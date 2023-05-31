@@ -28,9 +28,9 @@ function enroll(id) {
                             style="background-color: #FFFFFF; padding: 16px; box-sizing: border-box;">
                 <a-descriptions-item label="地点">校内8#影视中心</a-descriptions-item>
                 <a-descriptions-item label="需求">demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo demo</a-descriptions-item>
-                <a-descriptions-item label="时间">2023/05/14 14:45:00</a-descriptions-item>
+                <a-descriptions-item label="开始时间">2023/05/14 14:45:00</a-descriptions-item>
+                <a-descriptions-item label="结束时间">2023/05/14 14:45:00</a-descriptions-item>
                 <a-descriptions-item label="面向人员类型">面向全体和指派</a-descriptions-item>
-                <a-descriptions-item label="可报名人数">3</a-descriptions-item>
                 <a-descriptions-item label="操作">
                     <a-row>
                         <a-col>

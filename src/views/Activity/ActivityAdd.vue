@@ -22,11 +22,13 @@ const formState = reactive({
         notes: '',
         type: 'self-enrollment',
         place: '',
-        datetime: '',
+        start_datetime: '',
+        end_datetime: '',
     },
     checkIn: {
         name: "",
-        datetime: ""
+        start_datetime: "",
+        end_datetime: "",
     },
 
 });
@@ -71,6 +73,9 @@ const checkInSwitcher = ref(false);
                     <a-form-item :name="['activity', 'notes']" label="需求" :rules="[{ required: true }]">
                         <a-textarea v-model:value="formState.activity.notes"/>
                     </a-form-item>
+                    <a-form-item :name="['activity', 'place']" label="地点" :rules="[{ required: true }]">
+                        <a-input v-model:value="formState.activity.place"/>
+                    </a-form-item>
                     <a-form-item
                             :name="['activity', 'type']"
                             label="发布类型"
@@ -93,13 +98,24 @@ const checkInSwitcher = ref(false);
                     </div>
                     <a-form-item has-feedback
                                  :rules="[{ required: true, message: '请选择日期' }]"
-                                 v-model:value="formState.activity.datetime" name="date-time-picker" label="时间">
+                                 v-model:value="formState.activity.start_datetime" name="date-time-picker" label="开始时间">
                         <a-date-picker
                                 v-model:value="formState['date-time-picker']"
                                 show-time
                                 format="YYYY-MM-DD HH:mm:ss"
                                 value-format="YYYY-MM-DD HH:mm:ss"
                                 placeholder="不得早于当前时间"
+                        />
+                    </a-form-item>
+                    <a-form-item has-feedback
+                                 :rules="[{ required: true, message: '请选择日期' }]"
+                                 v-model:value="formState.activity.end_datetime" name="date-time-picker" label="结束时间">
+                        <a-date-picker
+                            v-model:value="formState['date-time-picker']"
+                            show-time
+                            format="YYYY-MM-DD HH:mm:ss"
+                            value-format="YYYY-MM-DD HH:mm:ss"
+                            placeholder="不得早于当前时间"
                         />
                     </a-form-item>
                     <a-form-item name="switch" label="生成签到">
@@ -111,14 +127,26 @@ const checkInSwitcher = ref(false);
                         </a-form-item>
                         <a-form-item has-feedback
                                      :rules="[{ required: true, message: '请选择日期' }]"
-                                     v-model:value="formState.checkIn.datetime" name="date-time-picker"
-                                     label="签到时间">
+                                     v-model:value="formState.checkIn.start_datetime" name="date-time-picker"
+                                     label="签到开始时间">
                             <a-date-picker
                                     v-model:value="formState['date-time-picker']"
                                     show-time
                                     format="YYYY-MM-DD HH:mm:ss"
                                     value-format="YYYY-MM-DD HH:mm:ss"
                                     placeholder="不得早于当前时间"
+                            />
+                        </a-form-item>
+                        <a-form-item has-feedback
+                                     :rules="[{ required: true, message: '请选择日期' }]"
+                                     v-model:value="formState.checkIn.end_datetime" name="date-time-picker"
+                                     label="签到结束时间">
+                            <a-date-picker
+                                v-model:value="formState['date-time-picker']"
+                                show-time
+                                format="YYYY-MM-DD HH:mm:ss"
+                                value-format="YYYY-MM-DD HH:mm:ss"
+                                placeholder="不得早于当前时间"
                             />
                         </a-form-item>
                     </div>

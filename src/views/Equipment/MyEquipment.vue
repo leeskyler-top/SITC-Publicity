@@ -9,14 +9,16 @@ for (let i = 1; i < 2; i++) {
         fixed_assets_num: "TY20220800001",
         name: '惠普Z2工作站',
         model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
-        apply_date: '2023-05-19 14:43:00',
+        created_at: '2023-05-19 14:43:00',
+        apply_time: '2023-05-19 14:43:00',
         status: "出借"
     });
     data.push({
         fixed_assets_num: "TY20220800002",
         name: '惠普Z2工作站',
         model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
-        apply_date: '2023-05-19 14:43:00',
+        created_at: '2023-05-19 14:43:00',
+        apply_time: '2023-05-19 14:43:00',
         status: "已拒绝"
     });
 }
@@ -54,7 +56,8 @@ function brokeEquipment(id) {
                 <a-descriptions-item label="固定资产编号">{{ item.fixed_assets_num }}</a-descriptions-item>
                 <a-descriptions-item label="设备名称">{{ item.name }}</a-descriptions-item>
                 <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
-                <a-descriptions-item label="申请时间">{{ item.apply_date }}</a-descriptions-item>
+                <a-descriptions-item label="申请时间">{{ item.created_at }}</a-descriptions-item>
+                <a-descriptions-item label="承诺归还时间">{{ item.apply_time }}</a-descriptions-item>
                 <a-descriptions-item label="状态">{{ item.status }}</a-descriptions-item>
                 <a-descriptions-item label="操作" v-if="item.status === '出借'">
                         <a-row style="gap: 5px;">

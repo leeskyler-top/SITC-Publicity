@@ -72,6 +72,10 @@ const router = createRouter({
         {
             path: '/activity/manager',
             component: () => import("@/views/Activity/ActivityManager.vue")
+        },
+        {
+            path: '/activity/enrollment',
+            component: () => import("@/views/Activity/ActivityEnrollmentManager.vue")
         }
     ]
 })

@@ -135,7 +135,9 @@
                             <router-link to="/activity/add">
                                 <a-menu-item key="15">活动添加</a-menu-item>
                             </router-link>
-                            <a-menu-item key="16">报名审核</a-menu-item>
+                            <router-link to="/activity/enrollment">
+                                <a-menu-item key="16">报名审核</a-menu-item>
+                            </router-link>
                         </div>
                     </a-sub-menu>
                 </a-menu>

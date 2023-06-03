@@ -1,15 +1,60 @@
 <script setup>
-import {ref} from "vue";
-import {Empty} from "ant-design-vue";
+import {ref, createVNode} from "vue";
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import {Empty, Modal} from "ant-design-vue";
+
 
 const current = ref(1);
 
 const data = [];
 data.push(1);
 
-function enroll(id) {
-    alert(id);
+const visible = ref(false);
+const showModal = () => {
+    visible.value = true;
+};
+const hideModal = () => {
+    visible.value = false;
+};
+
+function cancelEnroll(id) {
+
 }
+
+const showAlert = ref(false)
+
+const enroll = id => {
+    Modal.confirm({
+        title: '确认',
+        icon: createVNode(ExclamationCircleOutlined),
+        content: '确认报名？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk() {
+            countDown();
+        }
+    });
+
+}
+
+const countDown = () => {
+    let secondsToGo = 5;
+    const modal = Modal.success({
+        title: '报名成功',
+        content: `提示框将在 ${secondsToGo}s 后关闭`,
+    });
+    const interval = setInterval(() => {
+        secondsToGo -= 1;
+        modal.update({
+            content: `提示框将在 ${secondsToGo}s 后关闭`,
+        });
+    }, 1000);
+    setTimeout(() => {
+        clearInterval(interval);
+        modal.destroy();
+    }, secondsToGo * 1000);
+};
+
 </script>
 
 <template>
@@ -33,8 +78,11 @@ function enroll(id) {
                 <a-descriptions-item label="面向人员类型">面向全体和指派</a-descriptions-item>
                 <a-descriptions-item label="操作">
                     <a-row>
-                        <a-col>
+                        <a-col v-if="true">
                             <a-button type="primary" @click="enroll(item.id)">报名</a-button>
+                        </a-col>
+                        <a-col v-if="false">
+                            <a-button type="primary" danger @click="cancelEnroll(item.id)">撤销</a-button>
                         </a-col>
                     </a-row>
                 </a-descriptions-item>
@@ -43,6 +91,14 @@ function enroll(id) {
             <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
                           :total="data.length" v-if="data.length !== 0"/>
         </a-space>
+        <a-modal
+            v-model:visible="visible"
+            title="报名确认"
+            ok-text="确认"
+            cancel-text="取消"
+            @ok="hideModal"
+        >
+        </a-modal>
     </a-layout-content>
 </template>
 

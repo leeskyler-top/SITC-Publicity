@@ -39,13 +39,28 @@
                             </div>
                         </div>
                     </template>
+                    <template v-else-if="column.dataIndex === 'operation'">
+                        <div class="editable-row-operations">
+                             <span>
+                               <a @click="showPhotos">查看图片</a>
+                            </span>
+                        </div>
+                    </template>
                 </template>
             </a-table>
         </div>
         <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
             管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
         </div>
-
+        <a-modal  v-model:visible="visiblePhotos" >
+            <a-image-preview-group >
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
+            </a-image-preview-group>
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">OK</a-button>
+            </template>
+        </a-modal>
     </a-layout-content>
 
 </template>
@@ -125,7 +140,7 @@ const columns = [
     {
         title: '申请人学籍号',
         dataIndex: 'apply_uid',
-        width: '10%',
+        width: '5%',
         customFilterDropdown: true,
         onFilter: (value, record) =>
             record.apply_uid.toString().toLowerCase().includes(value.toLowerCase()),
@@ -133,7 +148,7 @@ const columns = [
     {
         title: '申请人姓名',
         dataIndex: 'apply_name',
-        width: '10%',
+        width: '5%',
         customFilterDropdown: true,
         onFilter: (value, record) =>
             record.apply_name.toString().toLowerCase().includes(value.toLowerCase()),
@@ -141,7 +156,7 @@ const columns = [
     {
         title: '审批人学籍号',
         dataIndex: 'audit_uid',
-        width: '10%',
+        width: '5%',
         customFilterDropdown: true,
         onFilter: (value, record) =>
             record.audit_uid.toString().toLowerCase().includes(value.toLowerCase()),
@@ -149,7 +164,7 @@ const columns = [
     {
         title: '审批人姓名',
         dataIndex: 'audit_name',
-        width: '10%',
+        width: '5%',
         customFilterDropdown: true,
         onFilter: (value, record) =>
             record.audit_name.toString().toLowerCase().includes(value.toLowerCase()),
@@ -183,6 +198,11 @@ const columns = [
         width: '5%',
         onFilter: (value, record) =>
             record.return_status.toString().toLowerCase().includes(value.toLowerCase()),
+    },
+    {
+        title: '操作',
+        dataIndex: 'operation',
+        width: '8%',
     },
 ];
 
@@ -218,6 +238,15 @@ const handleAdd = () => {
 };
 
 import { SearchOutlined  } from '@ant-design/icons-vue';
+
+const visiblePhotos = ref(false)
+const showPhotos = id => {
+    visiblePhotos.value = true;
+};
+
+const handleCancel = () => {
+    visiblePhotos.value = false;
+};
 
 </script>
 <style scoped>

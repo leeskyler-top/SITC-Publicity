@@ -61,10 +61,10 @@
                          <a @click="edit(record.key)">编辑</a>
                       </span>
                       <span>
-                          <a :disabled="editableData[record.key]">需求</a>
+                          <a :disabled="editableData[record.key]" @click="showInfo(record.id)">需求</a>
                       </span>
                       <span>
-                          <a :disabled="editableData[record.key]">签到管理</a>
+                          <a :disabled="editableData[record.key]" @click="showModal(record.id)">签到管理</a>
                       </span>
                             <span>
                         <a-popconfirm title="Sure to delete?" @confirm="deleteActivity(record.id)"><a
@@ -78,12 +78,80 @@
         <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
             管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
         </div>
+        <a-modal v-model:visible="visible" title="签到管理">
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">关闭</a-button>
+            </template>
+            <a-collapse v-model:activeKey="activeKey" accordion>
+                <a-collapse-panel key="1" header="demo demo">
+                    <a-card>
+                        <p>签到开始时间: 2023-06-02 21:42</p>
+                        <p>签到结束时间: 2023-06-02 21:50</p>
+                        <div>
+                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">变更结束时间</a-button>
+                        </div>
+                    </a-card>
+                    <a-card>
+                        <a-descriptions v-for="item in data" title="姓名"
+                                         layout="vertical">
 
+                                <a-descriptions-item label="签到时间">2023-06-03 21:09</a-descriptions-item>
+                                <a-descriptions-item label="签到状态">demo</a-descriptions-item>
+                                <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
+                                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">驳回</a-button>
+                                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;" @click="showPhotos(item.id)">查看照片</a-button>
+                                </a-descriptions-item>
+                        </a-descriptions>
+                    </a-card>
+
+                </a-collapse-panel>
+                <a-collapse-panel key="2" header="This is panel header 2">
+                    <a-card>
+                        <p>{{ text }}</p>
+                    </a-card>
+                    <a-card>
+                        <p>{{ text }}</p>
+                    </a-card>
+                    <a-card>
+                        <p>{{ text }}</p>
+                    </a-card>
+                </a-collapse-panel>
+                <a-collapse-panel key="3" header="This is panel header 3">
+                    <a-card>
+                        <p>{{ text }}</p>
+                    </a-card>
+                    <a-card>
+                        <p>{{ text }}</p>
+                    </a-card>
+                    <a-card>
+                        <p>{{ text }}</p>
+                    </a-card>
+                </a-collapse-panel>
+            </a-collapse>
+        </a-modal>
+        <a-modal  v-model:visible="visiblePhotos">
+            <a-image-preview-group>
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
+            </a-image-preview-group>
+            <template #footer>
+                <a-button type="primary" @click="hidePhotos">关闭</a-button>
+            </template>
+        </a-modal>
+        <a-modal v-model:visible="visibleInfo" title="需求">
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">关闭</a-button>
+                <a-button type="primary" @click="changeNote" danger>变更</a-button>
+            </template>
+            <p>可在此处修改需求</p>
+            <textarea style="width: 100%;">demo demo demo demo demo demo</textarea>
+        </a-modal>
     </a-layout-content>
 
 </template>
 <script setup>
-import {reactive, ref, onMounted} from 'vue';
+import {reactive, ref, onMounted, h} from 'vue';
+import {Modal} from "ant-design-vue";
 import {cloneDeep} from 'lodash-es';
 import { SearchOutlined  } from '@ant-design/icons-vue';
 
@@ -103,6 +171,8 @@ onMounted(() => {
 
 window.addEventListener('resize', handleResize);
 
+const activeKey = ref([]);
+const text = `A dog is a type of domesticated animal.Known for its loyalty and faithfulness,it can be found as a welcome guest in many households across the world.`;
 
 const data = [];
 for (let i = 0; i < 5; i++) {
@@ -197,6 +267,33 @@ const cancel = key => {
     delete editableData[key];
 };
 
+const visibleInfo = ref(false);
+const showInfo = id => {
+    visibleInfo.value = true;
+};
+
+const loading = ref(false);
+const visible = ref(false);
+const showModal = id => {
+    visible.value = true;
+};
+const handleCancel = () => {
+    visible.value = false;
+    visibleInfo.value = false;
+    visiblePhotos.value = false;
+};
+
+const changeNote = () => {
+
+}
+
+const visiblePhotos = ref(false)
+const showPhotos = id => {
+    visiblePhotos.value = true;
+};
+const hidePhotos = () => {
+    visiblePhotos.value = false;
+}
 </script>
 <style scoped>
 .editable-row-operations a {

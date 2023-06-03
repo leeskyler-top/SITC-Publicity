@@ -1,5 +1,6 @@
 <script setup>
 import {ref} from "vue";
+import {Modal} from "ant-design-vue";
 import {Empty} from "ant-design-vue";
 
 const data = [];
@@ -37,6 +38,16 @@ function lostEquipment(id) {
 function brokeEquipment(id) {
 
 }
+
+const visiblePhotos = ref(false)
+const showPhotos = id => {
+    visiblePhotos.value = true;
+};
+
+const handleCancel = () => {
+    visiblePhotos.value = false;
+};
+
 </script>
 
 <template>
@@ -62,7 +73,10 @@ function brokeEquipment(id) {
                 <a-descriptions-item label="操作">
                     <a-row style="gap: 5px;">
                         <a-col>
-                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">同意</a-button>
+                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showPhotos(item.id)">查看照片</a-button>
+                        </a-col>
+                        <a-col>
+                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">拒绝</a-button>
                         </a-col>
                         <a-col>
                             <a-button danger style="padding-top: 5px; box-sizing: border-box;">拒绝</a-button>
@@ -74,6 +88,15 @@ function brokeEquipment(id) {
             <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
                           :total="data.length" v-if="data.length !== 0"/>
         </a-space>
+        <a-modal  v-model:visible="visiblePhotos" >
+            <a-image-preview-group >
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
+            </a-image-preview-group>
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">OK</a-button>
+            </template>
+        </a-modal>
     </a-layout-content>
 </template>
 

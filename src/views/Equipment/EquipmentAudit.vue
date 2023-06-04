@@ -76,7 +76,7 @@ const handleCancel = () => {
                             <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showPhotos(item.id)">查看照片</a-button>
                         </a-col>
                         <a-col>
-                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">拒绝</a-button>
+                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">同意</a-button>
                         </a-col>
                         <a-col>
                             <a-button danger style="padding-top: 5px; box-sizing: border-box;">拒绝</a-button>

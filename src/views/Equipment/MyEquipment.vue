@@ -68,7 +68,7 @@ function brokeEquipment(id) {
                                     <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">延期申报</a-button>
                                 </a-col>
                                 <a-col>
-                                    <a-button danger style="padding-top: 5px; box-sizing: border-box;">归还申报</a-button>
+                                    <a-button danger style="padding-top: 5px; box-sizing: border-box;">异常申报</a-button>
                                 </a-col>
                         </a-row>
                 </a-descriptions-item>

@@ -51,22 +51,16 @@
                     </template>
                     <template v-else-if="column.dataIndex === 'operation'">
                         <div class="editable-row-operations">
-                      <span v-if="editableData[record.key]">
-                        <a-popconfirm title="确定保存?" @click="save(record.key)">
-                            <a>保存</a>
-                        </a-popconfirm>
-                        <a-typography-link @click="cancel(record.key)">取消</a-typography-link>
-                      </span>
-                            <span v-else>
-                         <a @click="edit(record.key)">编辑</a>
+                      <span>
+                          <a :disabled="editableData[record.key]" @click="showInfo(record.id)">编辑</a>
                       </span>
                       <span>
-                          <a :disabled="editableData[record.key]" @click="showInfo(record.id)">需求</a>
+                          <a :disabled="editableData[record.key]" @click="showPeople(record.id)">活动人员</a>
                       </span>
                       <span>
                           <a :disabled="editableData[record.key]" @click="showModal(record.id)">签到管理</a>
                       </span>
-                            <span>
+                      <span>
                         <a-popconfirm title="Sure to delete?" @confirm="deleteActivity(record.id)"><a
                                 style="color: red">删除</a></a-popconfirm>
                       </span>
@@ -103,29 +97,6 @@
                                 </a-descriptions-item>
                         </a-descriptions>
                     </a-card>
-
-                </a-collapse-panel>
-                <a-collapse-panel key="2" header="This is panel header 2">
-                    <a-card>
-                        <p>{{ text }}</p>
-                    </a-card>
-                    <a-card>
-                        <p>{{ text }}</p>
-                    </a-card>
-                    <a-card>
-                        <p>{{ text }}</p>
-                    </a-card>
-                </a-collapse-panel>
-                <a-collapse-panel key="3" header="This is panel header 3">
-                    <a-card>
-                        <p>{{ text }}</p>
-                    </a-card>
-                    <a-card>
-                        <p>{{ text }}</p>
-                    </a-card>
-                    <a-card>
-                        <p>{{ text }}</p>
-                    </a-card>
                 </a-collapse-panel>
             </a-collapse>
         </a-modal>
@@ -138,13 +109,77 @@
                 <a-button type="primary" @click="hidePhotos">关闭</a-button>
             </template>
         </a-modal>
-        <a-modal v-model:visible="visibleInfo" title="需求">
-            <template #footer>
-                <a-button type="primary" @click="handleCancel">关闭</a-button>
-                <a-button type="primary" @click="changeNote" danger>变更</a-button>
-            </template>
-            <p>可在此处修改需求</p>
-            <textarea style="width: 100%;">demo demo demo demo demo demo</textarea>
+        <a-modal v-model:visible="visibleInfo" title="变更活动信息">
+
+            <a-form
+                :model="formState"
+                name="validate_other"
+                v-bind="formItemLayout"
+                :validate-messages="validateMessages"
+                @finishFailed="onFinishFailed"
+                @finish="onFinish"
+                style="max-width: 500px;"
+
+            >
+                <a-form-item :name="['activity', 'title']" label="活动标题" :rules="[{ required: true }]">
+                    <a-input v-model:value="formState.activity.title"/>
+                </a-form-item>
+                <a-form-item :name="['activity', 'notes']" label="需求" :rules="[{ required: true }]">
+                    <a-textarea v-model:value="formState.activity.notes"/>
+                </a-form-item>
+                <a-form-item :name="['activity', 'place']" label="地点" :rules="[{ required: true }]">
+                    <a-input v-model:value="formState.activity.place"/>
+                </a-form-item>
+                <a-form-item
+                    :name="['activity', 'type']"
+                    label="发布类型"
+                    has-feedback
+                    :rules="[{ required: true, message: '请选择发布方式' }]"
+                >
+                    <a-select placeholder="选择一个发布类型" value="self-enrollment" disabled>
+                        <a-select-option value="assignment">指派</a-select-option>
+                        <a-select-option value="self-enrollment">自主报名</a-select-option>
+                        <a-select-option value="ase">自主报名与指派</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <div v-if="formState.activity.type === 'assignment' || formState.activity.type === 'ase'">
+                    <a-form-item style="display: flex; align-items: center; justify-content: center;">
+                        <a-button type="dashed" block @click="editUser">
+                            <PlusOutlined/>
+                            Add user
+                        </a-button>
+                    </a-form-item>
+                </div>
+                <a-form-item has-feedback
+                             :rules="[{ required: true, message: '请选择日期' }]"
+                             v-model:value="formState.activity.start_datetime" name="date-time-picker" label="开始时间">
+                    <a-date-picker
+                        v-model:value="formState['date-time-picker']"
+                        show-time
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="不得早于当前时间"
+                    />
+                </a-form-item>
+                <a-form-item has-feedback
+                             :rules="[{ required: true, message: '请选择日期' }]"
+                             v-model:value="formState.activity.end_datetime" name="date-time-picker" label="结束时间">
+                    <a-date-picker
+                        v-model:value="formState['date-time-picker']"
+                        show-time
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="不得早于当前时间"
+                    />
+                </a-form-item>
+
+                <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
+                    <template #footer>
+                        <a-button type="primary" @click="handleCancel">关闭</a-button>
+                        <a-button type="primary" @click="changeNote" html-type="submit" danger>变更</a-button>
+                    </template>
+                </a-form-item>
+            </a-form>
         </a-modal>
     </a-layout-content>
 
@@ -153,7 +188,7 @@
 import {reactive, ref, onMounted, h} from 'vue';
 import {Modal} from "ant-design-vue";
 import {cloneDeep} from 'lodash-es';
-import { SearchOutlined  } from '@ant-design/icons-vue';
+import {PlusOutlined, SearchOutlined} from '@ant-design/icons-vue';
 
 const isShow = ref(true);
 function handleResize (event) {
@@ -291,9 +326,47 @@ const visiblePhotos = ref(false)
 const showPhotos = id => {
     visiblePhotos.value = true;
 };
+const showPeople = id => {
+    visiblePhotos.value = true;
+};
 const hidePhotos = () => {
     visiblePhotos.value = false;
 }
+
+const formItemLayout = {
+    labelCol: {
+        span: 6,
+    },
+    wrapperCol: {
+        span: 14,
+    },
+};
+
+const editUser = () => {
+
+};
+
+const formState = reactive({
+    activity: {
+        title: '',
+        notes: '',
+        place: '',
+        start_datetime: '',
+        end_datetime: '',
+    },
+});
+const validateMessages = {
+    required: '${label} 必填!',
+    types: {
+        email: '${label} 非法邮箱格式',
+    },
+};
+const onFinish = values => {
+    console.log('Success:', values);
+};
+const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+};
 </script>
 <style scoped>
 .editable-row-operations a {

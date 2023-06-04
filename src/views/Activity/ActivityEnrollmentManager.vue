@@ -52,7 +52,7 @@
                     <template v-else-if="column.dataIndex === 'operation'">
                         <div class="editable-row-operations">
                         <span>
-                          <a>详情</a>
+                          <a @click="showModal(record.id)">详情</a>
                         </span>
                         </div>
                     </template>
@@ -62,7 +62,28 @@
         <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
             管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
         </div>
+        <a-modal v-model:visible="visible" title="报名管理">
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">关闭</a-button>
+            </template>
+            <a-card>
+                <p>活动开始时间: 2023-06-02 21:42</p>
+                <div>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger v-if="true" >关闭报名</a-button>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" v-if="false">打开报名</a-button>
+                </div>
+            </a-card>
+            <a-descriptions v-for="item in data" title="学籍号 系部 姓名"
+                            layout="vertical" style="margin-top: 4px;">
 
+                <a-descriptions-item label="报名时间">2023-06-03 21:09</a-descriptions-item>
+                <a-descriptions-item label="报名状态">待审核</a-descriptions-item>
+                <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger>驳回</a-button>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;">同意</a-button>
+                </a-descriptions-item>
+            </a-descriptions>
+        </a-modal>
     </a-layout-content>
 
 </template>
@@ -177,6 +198,15 @@ const save = key => {
 const cancel = key => {
     delete editableData[key];
 };
+
+const visible = ref(false);
+const showModal = id => {
+    visible.value = true;
+};
+const handleCancel = () => {
+    visible.value = false;
+};
+
 
 </script>
 <style scoped>

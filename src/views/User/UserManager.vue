@@ -61,7 +61,7 @@
                          <a @click="edit(record.key)">编辑</a>
                       </span>
                       <span>
-                          <a :disabled="editableData[record.key]">修改角色</a>
+                          <a :disabled="editableData[record.key]" @click="showModal(record.id)">修改角色</a>
                       </span>
                       <span>
                         <a-popconfirm title="Sure to delete?" @confirm="deleteUser(record.key)"><a
@@ -75,7 +75,39 @@
         <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
             管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
         </div>
-
+        <a-modal v-model:visible="visible" title="修改用户角色">
+          <a-card>
+              <p>用户id：<span>1</span></p>
+              <p>学籍号：<span>22100000</span></p>
+              <p>姓名：<span>Demo</span></p>
+              <p>班级：<span>215T01</span></p>
+              <p>系部：<span>信息技术系</span></p>
+          </a-card>
+            <a-form
+                    :model="formState"
+                    name="validate_other"
+                    v-bind="formItemLayout"
+                    @finishFailed="onFinishFailed"
+                    @finish="onFinish"
+            >
+                <a-form-item
+                        name="select"
+                        label="角色"
+                        has-feedback
+                        :rules="[{ required: true, message: 'Please select your country!' }]"
+                        style="padding-top: 8px;"
+                >
+                    <a-select v-model:value="formState.select" placeholder="选择角色">
+                        <a-select-option value="User">普通用户</a-select-option>
+                        <a-select-option value="Admin">管理员</a-select-option>
+                    </a-select>
+                </a-form-item>
+            </a-form>
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">关闭</a-button>
+                <a-button type="primary" @click="changeNote" danger>变更</a-button>
+            </template>
+        </a-modal>
     </a-layout-content>
 
 </template>
@@ -185,6 +217,35 @@ const save = key => {
 };
 const cancel = key => {
     delete editableData[key];
+};
+
+const visible = ref(false);
+
+const showModal = id => {
+    visible.value = true;
+}
+
+
+const formItemLayout = {
+    labelCol: {
+        span: 6,
+    },
+    wrapperCol: {
+        span: 14,
+    },
+};
+const formState = reactive({
+    select: "User"
+});
+const onFinish = values => {
+    console.log('Success:', values);
+};
+const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+};
+
+const handleCancel = () => {
+    visible.value = false;
 };
 
 </script>

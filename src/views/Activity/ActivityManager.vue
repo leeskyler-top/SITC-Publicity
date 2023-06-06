@@ -83,6 +83,7 @@
                         <p>签到结束时间: 2023-06-02 21:50</p>
                         <div>
                             <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">变更结束时间</a-button>
+                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 4px;" danger>删除签到</a-button>
                         </div>
                     </a-card>
                     <a-card>
@@ -99,15 +100,6 @@
                     </a-card>
                 </a-collapse-panel>
             </a-collapse>
-        </a-modal>
-        <a-modal  v-model:visible="visiblePhotos">
-            <a-image-preview-group>
-                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
-                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
-            </a-image-preview-group>
-            <template #footer>
-                <a-button type="primary" @click="hidePhotos">关闭</a-button>
-            </template>
         </a-modal>
         <a-modal v-model:visible="visibleInfo" title="变更活动信息">
 
@@ -181,6 +173,35 @@
                 </a-form-item>
             </a-form>
         </a-modal>
+        <a-modal v-model:visible="visiblePeople" title="活动人员">
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">关闭</a-button>
+            </template>
+            <a-card>
+                <div>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" v-if="true">新增人员</a-button>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 4px;" v-if="true" danger>关闭报名</a-button>
+                </div>
+            </a-card>
+            <a-descriptions v-for="item in data" title="学籍号 系部 姓名"
+                            layout="vertical" style="margin-top: 4px;">
+
+                <a-descriptions-item label="报名（指派）时间">2023-06-03 21:09</a-descriptions-item>
+                <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger>移除并通知</a-button>
+                </a-descriptions-item>
+            </a-descriptions>
+        </a-modal>
+        <a-modal  v-model:visible="visiblePhotos">
+            <a-image-preview-group>
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
+            </a-image-preview-group>
+            <template #footer>
+                <a-button type="primary" @click="hidePhotos">关闭</a-button>
+            </template>
+        </a-modal>
+
     </a-layout-content>
 
 </template>
@@ -326,9 +347,11 @@ const visiblePhotos = ref(false)
 const showPhotos = id => {
     visiblePhotos.value = true;
 };
+const visiblePeople = ref(false);
+
 const showPeople = id => {
-    visiblePhotos.value = true;
-};
+    visiblePeople.value = true;
+}
 const hidePhotos = () => {
     visiblePhotos.value = false;
 }
@@ -367,6 +390,8 @@ const onFinish = values => {
 const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
 };
+
+
 </script>
 <style scoped>
 .editable-row-operations a {

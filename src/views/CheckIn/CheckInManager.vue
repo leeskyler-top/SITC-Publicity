@@ -88,12 +88,10 @@
                     />
                 </a-form-item>
 
-                <a-form-item :wrapper-col="{ span: 12, offset: 6 }">
-                    <template #footer>
-                        <a-button type="primary" @click="handleCancel">关闭</a-button>
-                        <a-button type="primary" @click="changeNote" html-type="submit" danger>变更</a-button>
-                    </template>
-                </a-form-item>
+                <template #footer>
+                    <a-button type="primary" @click="handleCancel">关闭</a-button>
+                    <a-button type="primary" danger>变更</a-button>
+                </template>
             </a-form>
         </a-modal>
         <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
@@ -244,6 +242,10 @@ const onFinish = values => {
 };
 const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
+};
+
+const handleCancel = () => {
+    visibleInfo.value = false;
 };
 
 </script>

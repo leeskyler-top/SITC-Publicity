@@ -80,7 +80,6 @@ const onFinishFailed = errorInfo => {
                 </a-form>
             </a-col>
         </a-row>
-
     </a-layout-content>
 </template>
 

@@ -41,7 +41,7 @@
                     <a-descriptions-item label="签到时间">2023-06-03 21:09</a-descriptions-item>
                     <a-descriptions-item label="签到状态">demo</a-descriptions-item>
                     <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
-                        <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">驳回</a-button>
+                        <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger>驳回</a-button>
                         <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;" @click="showPhotos(item.id)">查看照片</a-button>
                     </a-descriptions-item>
                 </a-descriptions>
@@ -93,6 +93,15 @@
                     <a-button type="primary" danger>变更</a-button>
                 </template>
             </a-form>
+        </a-modal>
+        <a-modal  v-model:visible="visiblePhotos" >
+            <a-image-preview-group >
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
+            </a-image-preview-group>
+            <template #footer>
+                <a-button type="primary" @click="handlePhotosCancel">OK</a-button>
+            </template>
         </a-modal>
         <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
             管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
@@ -223,6 +232,12 @@ const edit = id => {
     visibleEdit.value = true;
 }
 
+const visiblePhotos = ref(false);
+
+const showPhotos = id => {
+    visiblePhotos.value = true;
+}
+
 const formState = reactive({
     activity: {
         activity_title: '',
@@ -247,6 +262,11 @@ const onFinishFailed = errorInfo => {
 const handleCancel = () => {
     visibleInfo.value = false;
 };
+
+const handlePhotosCancel = () => {
+    visiblePhotos.value = false;
+}
+
 
 </script>
 <style scoped>

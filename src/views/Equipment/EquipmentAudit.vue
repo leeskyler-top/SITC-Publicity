@@ -1,7 +1,8 @@
 <script setup>
-import {ref} from "vue";
+import {createVNode, ref} from "vue";
 import {Modal} from "ant-design-vue";
 import {Empty} from "ant-design-vue";
+import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
 const data = [];
 
@@ -48,6 +49,32 @@ const handleCancel = () => {
     visiblePhotos.value = false;
 };
 
+const showConfirm = (op) => {
+    if (op === "agree") {
+        Modal.confirm({
+            title: '确认操作',
+            icon: createVNode(ExclamationCircleOutlined),
+            content: '确定同意？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+
+            }
+        });
+    } else if (op === "refuse") {
+        Modal.confirm({
+            title: '确认操作',
+            icon: createVNode(ExclamationCircleOutlined),
+            content: '确认驳回？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+
+            }
+        });
+    }
+}
+
 </script>
 
 <template>
@@ -76,10 +103,10 @@ const handleCancel = () => {
                             <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showPhotos(item.id)">查看照片</a-button>
                         </a-col>
                         <a-col>
-                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">同意</a-button>
+                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showConfirm('agree')">同意</a-button>
                         </a-col>
                         <a-col>
-                            <a-button danger style="padding-top: 5px; box-sizing: border-box;">拒绝</a-button>
+                            <a-button danger style="padding-top: 5px; box-sizing: border-box;" @click="showConfirm('refuse')">拒绝</a-button>
                         </a-col>
                     </a-row>
                 </a-descriptions-item>

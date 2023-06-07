@@ -79,8 +79,8 @@
                 <a-descriptions-item label="报名时间">2023-06-03 21:09</a-descriptions-item>
                 <a-descriptions-item label="报名状态">待审核</a-descriptions-item>
                 <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
-                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger>驳回</a-button>
-                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;">同意</a-button>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showConfirm('refuse')" danger>驳回</a-button>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;" @click="showConfirm('agree')">同意</a-button>
                 </a-descriptions-item>
             </a-descriptions>
         </a-modal>
@@ -88,9 +88,10 @@
 
 </template>
 <script setup>
-import {reactive, ref, onMounted} from 'vue';
+import {reactive, ref, onMounted, createVNode} from 'vue';
 import {cloneDeep} from 'lodash-es';
-import { SearchOutlined  } from '@ant-design/icons-vue';
+import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons-vue';
+import {Modal} from "ant-design-vue";
 
 const isShow = ref(true);
 function handleResize (event) {
@@ -200,6 +201,32 @@ const cancel = key => {
 };
 
 const visible = ref(false);
+const showConfirm = (op) => {
+    if (op === "agree") {
+        Modal.confirm({
+            title: '确认操作',
+            icon: createVNode(ExclamationCircleOutlined),
+            content: '确定同意？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+
+            }
+        });
+    } else if (op === "refuse") {
+        Modal.confirm({
+            title: '确认操作',
+            icon: createVNode(ExclamationCircleOutlined),
+            content: '确认驳回？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+
+            }
+        });
+    }
+}
+
 const showModal = id => {
     visible.value = true;
 };
@@ -207,6 +234,23 @@ const handleCancel = () => {
     visible.value = false;
 };
 
+const countDown = () => {
+    let secondsToGo = 5;
+    const modal = Modal.success({
+        title: '操作成功',
+        content: `提示框将在 ${secondsToGo}s 后关闭`,
+    });
+    const interval = setInterval(() => {
+        secondsToGo -= 1;
+        modal.update({
+            content: `提示框将在 ${secondsToGo}s 后关闭`,
+        });
+    }, 1000);
+    setTimeout(() => {
+        clearInterval(interval);
+        modal.destroy();
+    }, secondsToGo * 1000);
+};
 
 </script>
 <style scoped>

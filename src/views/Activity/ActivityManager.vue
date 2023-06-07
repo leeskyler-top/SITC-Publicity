@@ -83,7 +83,7 @@
                         <p>签到结束时间: 2023-06-02 21:50</p>
                         <div>
                             <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">变更结束时间</a-button>
-                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 4px;" danger>删除签到</a-button>
+                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 4px;" danger @click="showConfirm('deleteCheckIn')">删除签到</a-button>
                         </div>
                     </a-card>
                     <a-card>
@@ -93,7 +93,7 @@
                                 <a-descriptions-item label="签到时间">2023-06-03 21:09</a-descriptions-item>
                                 <a-descriptions-item label="签到状态">demo</a-descriptions-item>
                                 <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
-                                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">驳回</a-button>
+                                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger @click="showConfirm('refuse')">驳回</a-button>
                                             <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;" @click="showPhotos(item.id)">查看照片</a-button>
                                 </a-descriptions-item>
                         </a-descriptions>
@@ -188,7 +188,7 @@
 
                 <a-descriptions-item label="报名（指派）时间">2023-06-03 21:09</a-descriptions-item>
                 <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
-                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger>移除并通知</a-button>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger @click="showConfirm('deleteUser')">移除并通知</a-button>
                 </a-descriptions-item>
             </a-descriptions>
         </a-modal>
@@ -222,9 +222,10 @@
 
 </template>
 <script setup>
-import {reactive, ref, onMounted, watch} from 'vue';
+import {reactive, ref, onMounted, watch, createVNode} from 'vue';
 import {cloneDeep, debounce} from 'lodash-es';
-import {PlusOutlined, SearchOutlined} from '@ant-design/icons-vue';
+import {ExclamationCircleOutlined, PlusOutlined, SearchOutlined} from '@ant-design/icons-vue';
+import {Modal} from "ant-design-vue";
 
 const isShow = ref(true);
 function handleResize (event) {
@@ -441,6 +442,42 @@ watch(state.value, () => {
     state.fetching = false;
 });
 
+const showConfirm = (op) => {
+    if (op === "refuse") {
+        Modal.confirm({
+            title: '确认操作',
+            icon: createVNode(ExclamationCircleOutlined),
+            content: '是否判定此签到无效并驳回？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+
+            }
+        });
+    } else if (op === "deleteCheckIn") {
+        Modal.confirm({
+            title: '确认操作',
+            icon: createVNode(ExclamationCircleOutlined),
+            content: '确认删除此签到？ 操作不可逆！',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+
+            }
+        });
+    } else if (op === "deleteUser") {
+        Modal.confirm({
+            title: '确认操作',
+            icon: createVNode(ExclamationCircleOutlined),
+            content: '确认将此人从活动人员中移除？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk() {
+
+            }
+        });
+    }
+}
 
 </script>
 <style scoped>

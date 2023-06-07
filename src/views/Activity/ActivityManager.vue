@@ -179,7 +179,7 @@
             </template>
             <a-card>
                 <div>
-                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" v-if="true">新增人员</a-button>
+                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" v-if="true" @click="showAddUsers(1)">新增人员</a-button>
                     <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 4px;" v-if="true" danger>关闭报名</a-button>
                 </div>
             </a-card>
@@ -201,14 +201,29 @@
                 <a-button type="primary" @click="hidePhotos">关闭</a-button>
             </template>
         </a-modal>
-
+        <a-modal v-model:visible="visibleAddUsers" title="指派人员">
+            <a-select
+                v-model:value="state.value"
+                mode="multiple"
+                label-in-value
+                placeholder="Select users"
+                style="width: 100%"
+                :filter-option="false"
+                :not-found-content="state.fetching ? undefined : null"
+                :options="state.data"
+                @search="fetchUser"
+            >
+                <template v-if="state.fetching" #notFoundContent>
+                    <a-spin size="small" />
+                </template>
+            </a-select>
+        </a-modal>
     </a-layout-content>
 
 </template>
 <script setup>
-import {reactive, ref, onMounted, h} from 'vue';
-import {Modal} from "ant-design-vue";
-import {cloneDeep} from 'lodash-es';
+import {reactive, ref, onMounted, watch} from 'vue';
+import {cloneDeep, debounce} from 'lodash-es';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons-vue';
 
 const isShow = ref(true);
@@ -248,6 +263,9 @@ const editableData = reactive({});
 const state = reactive({
     searchText: '',
     searchedColumn: '',
+    data: [],
+    value: [],
+    fetching: false,
 });
 
 const searchInput = ref();
@@ -337,6 +355,7 @@ const handleCancel = () => {
     visible.value = false;
     visibleInfo.value = false;
     visiblePhotos.value = false;
+    visibleAddUsers.value = false;
 };
 
 const changeNote = () => {
@@ -354,6 +373,11 @@ const showPeople = id => {
 }
 const hidePhotos = () => {
     visiblePhotos.value = false;
+}
+
+const visibleAddUsers = ref(false);
+const showAddUsers = id => {
+    visibleAddUsers.value = true;
 }
 
 const formItemLayout = {
@@ -390,6 +414,32 @@ const onFinish = values => {
 const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
 };
+
+let lastFetchId = 0;
+
+const fetchUser = debounce(value => {
+    console.log('fetching user', value);
+    lastFetchId += 1;
+    const fetchId = lastFetchId;
+    state.data = [];
+    state.fetching = true;
+    fetch('https://randomuser.me/api/?results=5').then(response => response.json()).then(body => {
+        if (fetchId !== lastFetchId) {
+            // for fetch callback order
+            return;
+        }
+        const data = body.results.map(user => ({
+            label: `${user.name.first} ${user.name.last}`,
+            value: user.login.username,
+        }));
+        state.data = data;
+        state.fetching = false;
+    });
+}, 300);
+watch(state.value, () => {
+    state.data = [];
+    state.fetching = false;
+});
 
 
 </script>

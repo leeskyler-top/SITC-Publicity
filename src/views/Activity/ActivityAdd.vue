@@ -27,11 +27,9 @@ const formState = reactive({
         place: '',
         start_datetime: '',
         end_datetime: '',
-    },
-    checkIn: {
-        name: "",
-        start_datetime: "",
-        end_datetime: "",
+        checkin_name: '',
+        checkin_start_datetime: '',
+        checkin_end_datetime: '',
     },
 
 });
@@ -96,7 +94,7 @@ watch(state.value, () => {
         <a-row>
             <a-col :span="24" style="padding: 24px; background-color: #FFFFFF">
                 <a-form
-                        :model="formState"
+                        :model="formState.activity"
                         name="validate_other"
                         v-bind="formItemLayout"
                         :validate-messages="validateMessages"
@@ -105,17 +103,17 @@ watch(state.value, () => {
                         style="max-width: 500px;"
 
                 >
-                    <a-form-item :name="['activity', 'title']" label="活动标题" :rules="[{ required: true }]">
+                    <a-form-item name="title" label="活动标题" :rules="[{ required: true }]">
                         <a-input v-model:value="formState.activity.title"/>
                     </a-form-item>
-                    <a-form-item :name="['activity', 'notes']" label="需求" :rules="[{ required: true }]">
+                    <a-form-item name="notes" label="需求" :rules="[{ required: true }]">
                         <a-textarea v-model:value="formState.activity.notes"/>
                     </a-form-item>
-                    <a-form-item :name="['activity', 'place']" label="地点" :rules="[{ required: true }]">
+                    <a-form-item name="place" label="地点" :rules="[{ required: true }]">
                         <a-input v-model:value="formState.activity.place"/>
                     </a-form-item>
                     <a-form-item
-                            :name="['activity', 'type']"
+                            name="type"
                             label="发布类型"
                             has-feedback
                             :rules="[{ required: true, message: '请选择发布方式' }]"
@@ -135,10 +133,9 @@ watch(state.value, () => {
                         </a-form-item>
                     </div>
                     <a-form-item has-feedback
-                                 :rules="[{ required: true, message: '请选择日期' }]"
-                                 v-model:value="formState.activity.start_datetime" name="date-time-picker" label="开始时间">
+                                 :rules="[{ required: true, message: '请选择日期' }]" name="start_datetime" label="开始时间">
                         <a-date-picker
-                                v-model:value="formState['date-time-picker']"
+                                v-model:value="formState.activity.start_datetime"
                                 show-time
                                 format="YYYY-MM-DD HH:mm:ss"
                                 value-format="YYYY-MM-DD HH:mm:ss"
@@ -146,10 +143,9 @@ watch(state.value, () => {
                         />
                     </a-form-item>
                     <a-form-item has-feedback
-                                 :rules="[{ required: true, message: '请选择日期' }]"
-                                 v-model:value="formState.activity.end_datetime" name="date-time-picker" label="结束时间">
+                                 :rules="[{ required: true, message: '请选择日期' }]" name="end_datetime" label="结束时间">
                         <a-date-picker
-                            v-model:value="formState['date-time-picker']"
+                            v-model:value="formState.activity.end_datetime"
                             show-time
                             format="YYYY-MM-DD HH:mm:ss"
                             value-format="YYYY-MM-DD HH:mm:ss"
@@ -160,15 +156,14 @@ watch(state.value, () => {
                         <a-switch v-model:checked="checkInSwitcher"/>
                     </a-form-item>
                     <div v-if="checkInSwitcher">
-                        <a-form-item :name="['checkIn', 'name']" label="签到名称" :rules="[{ required: true }]">
-                            <a-input v-model:value="formState.activity.title"/>
+                        <a-form-item name="name" label="签到名称" :rules="[{ required: true }]">
+                            <a-input v-model:value="formState.activity.checkin_name"/>
                         </a-form-item>
                         <a-form-item has-feedback
                                      :rules="[{ required: true, message: '请选择日期' }]"
-                                     v-model:value="formState.checkIn.start_datetime" name="date-time-picker"
                                      label="签到开始时间">
                             <a-date-picker
-                                    v-model:value="formState['date-time-picker']"
+                                    v-model:value="formState.activity.checkIn.checkin_start_datetime"
                                     show-time
                                     format="YYYY-MM-DD HH:mm:ss"
                                     value-format="YYYY-MM-DD HH:mm:ss"
@@ -177,10 +172,9 @@ watch(state.value, () => {
                         </a-form-item>
                         <a-form-item has-feedback
                                      :rules="[{ required: true, message: '请选择日期' }]"
-                                     v-model:value="formState.checkIn.end_datetime" name="date-time-picker"
                                      label="签到结束时间">
                             <a-date-picker
-                                v-model:value="formState['date-time-picker']"
+                                v-model:value="formState.activity.checkin_end_datetime"
                                 show-time
                                 format="YYYY-MM-DD HH:mm:ss"
                                 value-format="YYYY-MM-DD HH:mm:ss"

@@ -64,6 +64,9 @@
                           <a :disabled="editableData[record.key]" @click="showModal(record.id)">修改角色</a>
                       </span>
                       <span>
+                          <a :disabled="editableData[record.key]" @click="showConfirm(record.id)">重置密码</a>
+                      </span>
+                      <span>
                         <a-popconfirm title="Sure to delete?" @confirm="deleteUser(record.key)"><a
                                 style="color: red">删除</a></a-popconfirm>
                       </span>
@@ -108,13 +111,29 @@
                 <a-button type="primary" @click="changeNote" danger>变更</a-button>
             </template>
         </a-modal>
+        <a-modal v-model:visible="visiblePassword" title="重置密码">
+            <a-card>
+                <p>用户id：<span>1</span></p>
+                <p>学籍号：<span>22100000</span></p>
+                <p>姓名：<span>Demo</span></p>
+                <p>班级：<span>215T01</span></p>
+                <p>系部：<span>信息技术系</span></p>
+            </a-card>
+            <a-card>
+                <p>密码已重置，密码为: a0PPomsa</p>
+            </a-card>
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">关闭</a-button>
+            </template>
+        </a-modal>
     </a-layout-content>
 
 </template>
 <script setup>
-import {reactive, ref, onMounted} from 'vue';
+import {reactive, ref, onMounted, createVNode} from 'vue';
 import {cloneDeep} from 'lodash-es';
-import { SearchOutlined  } from '@ant-design/icons-vue';
+import {ExclamationCircleOutlined, SearchOutlined} from '@ant-design/icons-vue';
+import {Modal} from "ant-design-vue";
 
 const isShow = ref(true);
 function handleResize (event) {
@@ -220,12 +239,28 @@ const cancel = key => {
 };
 
 const visible = ref(false);
+const visiblePassword = ref(false);
 
 const showModal = id => {
     visible.value = true;
 }
 
+const showPassword = id => {
+    visiblePassword.value = true;
+}
 
+const showConfirm = (id) => {
+    Modal.confirm({
+        title: '确认操作',
+        icon: createVNode(ExclamationCircleOutlined),
+        content: '确定重置密码？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk() {
+            showPassword(id)
+        }
+    });
+}
 const formItemLayout = {
     labelCol: {
         span: 6,

@@ -46,6 +46,15 @@ const formState = reactive({
         start_datetime: '',
         end_datetime: '',
     },
+    delayForm: {
+        reason: '',
+        apply_time: ''
+    },
+    report: {
+        situation: '',
+        type: 'damaged',
+        upload: ''
+    },
 });
 const formItemLayout = {
     labelCol: {
@@ -93,6 +102,7 @@ const handleCancel = () => {
 };
 
 
+
 </script>
 
 <template>
@@ -121,10 +131,10 @@ const handleCancel = () => {
                                     <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showBack(1)">归还申报</a-button>
                                 </a-col>
                                 <a-col>
-                                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;">延期申报</a-button>
+                                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showDelay(1)">延期申报</a-button>
                                 </a-col>
                                 <a-col>
-                                    <a-button danger style="padding-top: 5px; box-sizing: border-box;">异常申报</a-button>
+                                    <a-button danger style="padding-top: 5px; box-sizing: border-box;" @click="showReport(1)">异常报告</a-button>
                                 </a-col>
                         </a-row>
                 </a-descriptions-item>
@@ -164,6 +174,58 @@ const handleCancel = () => {
             <template #footer>
                 <a-button type="primary" danger @click="handleCancel">取消</a-button>
             </template>
+        </a-modal>
+        <a-modal v-model:visible="visibleDelay" title="延期申报">
+            <a-form :model="formState.delayForm">
+                <a-form-item :name="['delayForm', 'reason']" label="理由">
+                    <a-textarea v-model:value="formState.delayForm.reason" />
+                </a-form-item>
+                <a-form-item has-feedback
+                             :rules="[{ required: true, message: '请选择日期' }]"   name="apply_time" label="承诺归还时间" v-bind="config">
+                    <a-date-picker
+                        v-model:value="formState.delayForm.apply_time"
+                        show-time
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="不得早于当前时间"
+                    />
+                </a-form-item>
+            </a-form>
+        </a-modal>
+        <a-modal v-model:visible="visibleReport" title="异常报告">
+            <a-form :model="formState.report">
+                <a-form-item
+                    name="type"
+                    label="类型"
+                    has-feedback
+                    :rules="[{ required: true, message: '请选择类型' }]"
+                >
+                    <a-select v-model:value="formState.report.type" placeholder="选择类型">
+                        <a-select-option value="damaged">损坏</a-select-option>
+                        <a-select-option value="missed">丢失</a-select-option>
+                    </a-select>
+                </a-form-item>
+
+                <a-form-item name="situation" label="情况" :rules="[{ required: true, message: '请说明情况' }]">
+                    <a-textarea v-model:value="formState.report.situation" />
+                </a-form-item>
+
+                <div v-if="true">
+                    <a-form-item name="upload" label="Upload" extra="至少上传一张图片，最多两张" :rules="[{ required: true, message: '至少上传一张图片' }]">
+                        <a-upload
+                            name="logo"
+                            action="/upload.do"
+                            list-type="picture"
+                            before-upload="false" max-count="2"
+                        >
+                            <a-button>
+                                <template #icon><UploadOutlined /></template>
+                                Click to upload
+                            </a-button>
+                        </a-upload>
+                    </a-form-item>
+                </div>
+            </a-form>
         </a-modal>
     </a-layout-content>
 </template>

@@ -133,13 +133,19 @@ const showPhotos = id => {
     visiblePhotos.value = true;
 }
 
+const visibleAdd = ref(false);
+
+const showAdd = () => {
+    visibleAdd.value = true;
+}
+
 const formState = reactive({
-    activity: {
-        activity_title: '',
+    checkIn: {
+        activity_id: '',
         name: '',
         start_datetime: '',
         end_datetime: '',
-    },
+    }
 });
 const validateMessages = {
     required: '${label} 必填!',
@@ -183,9 +189,7 @@ const showConfirm = (id) => {
         <h2>签到管理</h2>
         <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow" >
             <a-row justify="end">
-                <router-link to="/activity/add">
-                    <a-button type="primary" style="margin: 8px; " ghost>新建签到</a-button>
-                </router-link>
+                <a-button type="primary" style="margin: 8px; " ghost @click="showAdd">新建签到</a-button>
             </a-row>
             <a-table bordered :data-source="dataSource" :columns="columns">
                 <template #bodyCell="{ column, text, record }">
@@ -225,10 +229,10 @@ const showConfirm = (id) => {
                 </a-descriptions>
             </a-card>
         </a-modal>
-        <a-modal v-model:visible="visibleEdit" title="变更活动信息">
+        <a-modal v-model:visible="visibleAdd" title="新建签到">
 
             <a-form
-                :model="formState"
+                :model="formState.checkIn"
                 name="validate_other"
                 v-bind="formItemLayout"
                 :validate-messages="validateMessages"
@@ -237,17 +241,24 @@ const showConfirm = (id) => {
                 style="max-width: 500px;"
 
             >
-                <a-form-item :name="['activity', 'title']" label="活动标题" :rules="[{ required: true }]">
-                    <a-input v-model:value="formState.activity.title"/>
+                <a-form-item
+                    name="activity_id"
+                    label="选择活动"
+                    has-feedback
+                    :rules="[{ required: true, message: '请选择一个有效活动' }]"
+                >
+                    <a-select v-model:value="formState.checkIn.activity_id" placeholder="选择需要绑定的活动">
+                        <a-select-option value="1">Demo 1</a-select-option>
+                        <a-select-option value="2">Demo 2</a-select-option>
+                    </a-select>
                 </a-form-item>
-                <a-form-item :name="['activity', 'notes']" label="签到名称" :rules="[{ required: true }]">
-                    <a-textarea v-model:value="formState.activity.notes"/>
+                <a-form-item name="name" label="签到名称" :rules="[{ required: true }]">
+                    <a-input v-model:value="formState.checkIn.name"/>
                 </a-form-item>
                 <a-form-item has-feedback
-                             :rules="[{ required: true, message: '请选择日期' }]"
-                             v-model:value="formState.activity.start_datetime" name="date-time-picker" label="开始时间">
+                             :rules="[{ required: true, message: '请选择日期' }]" name="start_datetime" label="开始时间">
                     <a-date-picker
-                        v-model:value="formState['date-time-picker']"
+                        v-model:value="formState.checkIn.start_datetime"
                         show-time
                         format="YYYY-MM-DD HH:mm:ss"
                         value-format="YYYY-MM-DD HH:mm:ss"
@@ -255,10 +266,9 @@ const showConfirm = (id) => {
                     />
                 </a-form-item>
                 <a-form-item has-feedback
-                             :rules="[{ required: true, message: '请选择日期' }]"
-                             v-model:value="formState.activity.end_datetime" name="date-time-picker" label="结束时间">
+                             :rules="[{ required: true, message: '请选择日期' }]" name="end_datetime" label="结束时间">
                     <a-date-picker
-                        v-model:value="formState['date-time-picker']"
+                        v-model:value="formState.checkIn.end_datetime"
                         show-time
                         format="YYYY-MM-DD HH:mm:ss"
                         value-format="YYYY-MM-DD HH:mm:ss"

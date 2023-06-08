@@ -41,7 +41,7 @@
                     <a-descriptions-item label="签到时间">2023-06-03 21:09</a-descriptions-item>
                     <a-descriptions-item label="签到状态">demo</a-descriptions-item>
                     <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
-                        <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger>驳回</a-button>
+                        <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger @click="showConfirm(item.id)">驳回</a-button>
                         <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;" @click="showPhotos(item.id)">查看照片</a-button>
                     </a-descriptions-item>
                 </a-descriptions>
@@ -111,9 +111,16 @@
 
 </template>
 <script setup>
-import {reactive, ref, onMounted} from 'vue';
+import {reactive, ref, onMounted, createVNode} from 'vue';
 import {cloneDeep} from 'lodash-es';
-import {CheckOutlined, EditOutlined, PlusOutlined, SearchOutlined} from '@ant-design/icons-vue';
+import {
+    CheckOutlined,
+    EditOutlined,
+    ExclamationCircleOutlined,
+    PlusOutlined,
+    SearchOutlined
+} from '@ant-design/icons-vue';
+import {Modal} from "ant-design-vue";
 
 const isShow = ref(true);
 function handleResize (event) {
@@ -267,6 +274,18 @@ const handlePhotosCancel = () => {
     visiblePhotos.value = false;
 }
 
+const showConfirm = (id) => {
+    Modal.confirm({
+        title: '确认操作',
+        icon: createVNode(ExclamationCircleOutlined),
+        content: '是否判定此签到无效并驳回？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk() {
+
+        }
+    });
+}
 
 </script>
 <style scoped>

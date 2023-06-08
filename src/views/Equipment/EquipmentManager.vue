@@ -54,8 +54,9 @@
 </template>
 <script setup>
 import {computed, defineComponent, onMounted, reactive, ref} from 'vue';
-import {CheckOutlined, EditOutlined} from '@ant-design/icons-vue';
+import {CheckOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons-vue';
 import {cloneDeep} from 'lodash-es';
+import {c} from "../../../dist/assets/index-5564133b";
 
 
 /*
@@ -201,7 +202,6 @@ const handleAdd = () => {
     };
     dataSource.value.push(newData);
 };
-
 
 </script>
 <style lang="less">

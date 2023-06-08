@@ -1,79 +1,3 @@
-<template>
-    <a-layout-content
-        :style="{margin: '16px'}"
-    >
-        <h2>
-            我的资料
-
-        </h2>
-        <a-row :style="{ background: '#fff', padding: '24px'}">
-            <a-col :lg="{span: 8}" :md="{span: 24}" :sm="{span: 24}" :xs="{span: 24}" style="max-width: 200px;">
-                <a-menu
-                    v-model:openKeys="openKeys"
-                    v-model:selectedKeys="selectedKeys"
-                    mode="vertical"
-                    @click="handleClick"
-                >
-                    <a-menu-item key="1" @click="changeMenu('myInfo')">
-                        <template #icon>
-                            <info-circle-outlined/>
-                        </template>
-                        账户信息
-                    </a-menu-item>
-                    <a-menu-item key="2" @click="changeMenu('changePwd')">
-                        <template #icon>
-                            <lock-outlined/>
-                        </template>
-                        密码变更
-                    </a-menu-item>
-                </a-menu>
-            </a-col>
-            <a-col v-if="menu === 'myInfo'" :lg="{span: 16}" :md="{span: 24}" :sm="{span: 24}" :xs="{span: 24}"
-                   style=" padding: 0 16px;">
-                <a-descriptions title="用户详情" bordered>
-                    <a-descriptions-item label="姓名">Demo</a-descriptions-item>
-                    <a-descriptions-item label="工号/学籍号">22100000</a-descriptions-item>
-                    <a-descriptions-item label="系部">信息技术系</a-descriptions-item>
-                    <a-descriptions-item label="班级">215T01</a-descriptions-item>
-                    <a-descriptions-item label="账户类型">User</a-descriptions-item>
-                    <a-descriptions-item label="创建时间">2023-05-20 00:00:00</a-descriptions-item>
-                    <a-descriptions-item label="备注" :span="2">暂无</a-descriptions-item>
-                </a-descriptions>
-            </a-col>
-            <a-col v-if="menu === 'changePwd'" :lg="{span: 16}" :md="{span: 24}" :sm="{span: 24}" :xs="{span: 24}"
-                   style=" padding: 0 16px;">
-                <h2 class="ant-descriptions-title"> 密码更改 </h2>
-                <a-form
-                    ref="formRef"
-                    name="custom-validation"
-                    :model="formState"
-                    :rules="rules"
-                    v-bind="layout"
-                    @finish="handleFinish"
-                    @validate="handleValidate"
-                    @finishFailed="handleFinishFailed"
-                    layout="vertical"
-                >
-                    <a-form-item has-feedback label="旧密码" name="original_password" style="padding-top: 4px;">
-                        <a-input v-model:value="formState.pass" type="password" autocomplete="off" />
-                    </a-form-item>
-                    <a-form-item has-feedback label="新密码" name="new_password">
-                        <a-input v-model:value="formState.checkPass" type="password" autocomplete="off" />
-                    </a-form-item>
-                    <a-form-item has-feedback label="确认密码" name="repeat_password">
-                        <a-input v-model:value="formState.checkPass" type="password" autocomplete="off" />
-                    </a-form-item>
-                    <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-                        <a-button type="primary" html-type="submit">Submit</a-button>
-                        <a-button style="margin-left: 10px" @click="resetForm">Reset</a-button>
-                    </a-form-item>
-                </a-form>
-
-            </a-col>
-        </a-row>
-    </a-layout-content>
-
-</template>
 <script setup>
 import {reactive, ref} from 'vue';
 import {
@@ -165,6 +89,83 @@ function changeMenu(op) {
 
 
 </script>
+<template>
+    <a-layout-content
+        :style="{margin: '16px'}"
+    >
+        <h2>
+            我的资料
+
+        </h2>
+        <a-row :style="{ background: '#fff', padding: '24px'}">
+            <a-col :lg="{span: 8}" :md="{span: 24}" :sm="{span: 24}" :xs="{span: 24}" style="max-width: 200px;">
+                <a-menu
+                    v-model:openKeys="openKeys"
+                    v-model:selectedKeys="selectedKeys"
+                    mode="vertical"
+                    @click="handleClick"
+                >
+                    <a-menu-item key="1" @click="changeMenu('myInfo')">
+                        <template #icon>
+                            <info-circle-outlined/>
+                        </template>
+                        账户信息
+                    </a-menu-item>
+                    <a-menu-item key="2" @click="changeMenu('changePwd')">
+                        <template #icon>
+                            <lock-outlined/>
+                        </template>
+                        密码变更
+                    </a-menu-item>
+                </a-menu>
+            </a-col>
+            <a-col v-if="menu === 'myInfo'" :lg="{span: 16}" :md="{span: 24}" :sm="{span: 24}" :xs="{span: 24}"
+                   style=" padding: 0 16px;">
+                <a-descriptions title="用户详情" bordered>
+                    <a-descriptions-item label="姓名">Demo</a-descriptions-item>
+                    <a-descriptions-item label="工号/学籍号">22100000</a-descriptions-item>
+                    <a-descriptions-item label="系部">信息技术系</a-descriptions-item>
+                    <a-descriptions-item label="班级">215T01</a-descriptions-item>
+                    <a-descriptions-item label="账户类型">User</a-descriptions-item>
+                    <a-descriptions-item label="创建时间">2023-05-20 00:00:00</a-descriptions-item>
+                    <a-descriptions-item label="备注" :span="2">暂无</a-descriptions-item>
+                </a-descriptions>
+            </a-col>
+            <a-col v-if="menu === 'changePwd'" :lg="{span: 16}" :md="{span: 24}" :sm="{span: 24}" :xs="{span: 24}"
+                   style=" padding: 0 16px;">
+                <h2 class="ant-descriptions-title"> 密码更改 </h2>
+                <a-form
+                    ref="formRef"
+                    name="custom-validation"
+                    :model="formState"
+                    :rules="rules"
+                    v-bind="layout"
+                    @finish="handleFinish"
+                    @validate="handleValidate"
+                    @finishFailed="handleFinishFailed"
+                    layout="vertical"
+                >
+                    <a-form-item has-feedback label="旧密码" name="original_password" style="padding-top: 4px;">
+                        <a-input v-model:value="formState.pass" type="password" autocomplete="off" />
+                    </a-form-item>
+                    <a-form-item has-feedback label="新密码" name="new_password">
+                        <a-input v-model:value="formState.checkPass" type="password" autocomplete="off" />
+                    </a-form-item>
+                    <a-form-item has-feedback label="确认密码" name="repeat_password">
+                        <a-input v-model:value="formState.checkPass" type="password" autocomplete="off" />
+                    </a-form-item>
+                    <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+                        <a-button type="primary" html-type="submit">Submit</a-button>
+                        <a-button style="margin-left: 10px" @click="resetForm">Reset</a-button>
+                    </a-form-item>
+                </a-form>
+
+            </a-col>
+        </a-row>
+    </a-layout-content>
+
+</template>
+
 <style>
 
 </style>

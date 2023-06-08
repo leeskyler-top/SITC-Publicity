@@ -1,69 +1,3 @@
-<template>
-    <a-layout-content
-        :style="{margin: '16px'}"
-    >
-        <h2>所有设备出借历史</h2>
-        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow" >
-            <a-table bordered :data-source="dataSource" :columns="columns">
-                <template
-                    #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
-                >
-                    <div style="padding: 8px">
-                        <a-input
-                            ref="searchInput"
-                            :placeholder="`Search ${column.dataIndex}`"
-                            :value="selectedKeys[0]"
-                            style="width: 188px; margin-bottom: 8px; display: block"
-                            @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
-                            @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)"
-                        />
-                        <a-button
-                            type="primary"
-                            size="small"
-                            style="width: 90px; margin-right: 8px"
-                            @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
-                        >
-                            <template #icon><search-outlined /></template>
-                            Search
-                        </a-button>
-                        <a-button size="small" style="width: 90px" @click="handleReset(clearFilters)">
-                            Reset
-                        </a-button>
-                    </div>
-                </template>
-                <template #bodyCell="{ column, text, record }">
-                    <template v-if="column.dataIndex === 'name'">
-                        <div class="editable-cell">
-                            <div class="editable-cell-text-wrapper">
-                                {{ text || ' ' }}
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else-if="column.dataIndex === 'operation'">
-                        <div class="editable-row-operations">
-                             <span>
-                               <a @click="showPhotos">查看图片</a>
-                            </span>
-                        </div>
-                    </template>
-                </template>
-            </a-table>
-        </div>
-        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
-            管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
-        </div>
-        <a-modal  v-model:visible="visiblePhotos" >
-            <a-image-preview-group >
-                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
-                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
-            </a-image-preview-group>
-            <template #footer>
-                <a-button type="primary" @click="handleCancel">OK</a-button>
-            </template>
-        </a-modal>
-    </a-layout-content>
-
-</template>
 <script setup>
 import {cloneDeep} from 'lodash-es';
 import {reactive, ref, onMounted, computed} from 'vue';
@@ -249,6 +183,73 @@ const handleCancel = () => {
 };
 
 </script>
+<template>
+    <a-layout-content
+        :style="{margin: '16px'}"
+    >
+        <h2>所有设备出借历史</h2>
+        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow" >
+            <a-table bordered :data-source="dataSource" :columns="columns">
+                <template
+                    #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
+                >
+                    <div style="padding: 8px">
+                        <a-input
+                            ref="searchInput"
+                            :placeholder="`Search ${column.dataIndex}`"
+                            :value="selectedKeys[0]"
+                            style="width: 188px; margin-bottom: 8px; display: block"
+                            @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+                            @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)"
+                        />
+                        <a-button
+                            type="primary"
+                            size="small"
+                            style="width: 90px; margin-right: 8px"
+                            @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+                        >
+                            <template #icon><search-outlined /></template>
+                            Search
+                        </a-button>
+                        <a-button size="small" style="width: 90px" @click="handleReset(clearFilters)">
+                            Reset
+                        </a-button>
+                    </div>
+                </template>
+                <template #bodyCell="{ column, text, record }">
+                    <template v-if="column.dataIndex === 'name'">
+                        <div class="editable-cell">
+                            <div class="editable-cell-text-wrapper">
+                                {{ text || ' ' }}
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else-if="column.dataIndex === 'operation'">
+                        <div class="editable-row-operations">
+                             <span>
+                               <a @click="showPhotos">查看图片</a>
+                            </span>
+                        </div>
+                    </template>
+                </template>
+            </a-table>
+        </div>
+        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
+            管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
+        </div>
+        <a-modal  v-model:visible="visiblePhotos" >
+            <a-image-preview-group >
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
+            </a-image-preview-group>
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">OK</a-button>
+            </template>
+        </a-modal>
+    </a-layout-content>
+
+</template>
+
 <style scoped>
 .editable-row-operations a {
     margin-right: 8px;

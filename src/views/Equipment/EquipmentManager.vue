@@ -1,57 +1,3 @@
-<template>
-    <a-layout-content
-            :style="{margin: '16px'}"
-    >
-        <h2>设备管理</h2>
-        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow">
-            <a-row justify="end">
-                <router-link to="/equipment/add">
-                    <a-button type="primary" style="margin: 8px; " ghost>添加设备</a-button>
-                </router-link>
-            </a-row>
-            <a-table bordered :data-source="dataSource" :columns="columns">
-                <template #bodyCell="{ column, text, record }">
-                    <template v-if="column.dataIndex === 'name'">
-                        <div class="editable-cell">
-                            <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-                                <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)"/>
-                                <check-outlined class="editable-cell-icon-check" @click="save(record.key)"/>
-                            </div>
-                            <div v-else class="editable-cell-text-wrapper">
-                                {{ text || ' ' }}
-                                <edit-outlined class="editable-cell-icon" @click="edit(record.key)"/>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else-if="column.dataIndex === 'operation'">
-                        <div class="editable-row-operations">
-                            <span>
-                              <a>编辑</a>
-                            </span>
-                            <span>
-                              <a>出借历史</a>
-                            </span>
-                            <span>
-                              <a-popconfirm
-                                    v-if="dataSource.length"
-                                    title="是否删除?"
-                                    @confirm="onDelete(record.key)"
-                            >
-                                <a style="color:red;">删除</a>
-                              </a-popconfirm>
-                        </span>
-                        </div>
-                    </template>
-                </template>
-            </a-table>
-        </div>
-        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false">
-            管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
-        </div>
-
-    </a-layout-content>
-
-</template>
 <script setup>
 import {computed, defineComponent, onMounted, reactive, ref} from 'vue';
 import {CheckOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons-vue';
@@ -204,6 +150,61 @@ const handleAdd = () => {
 };
 
 </script>
+<template>
+    <a-layout-content
+            :style="{margin: '16px'}"
+    >
+        <h2>设备管理</h2>
+        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow">
+            <a-row justify="end">
+                <router-link to="/equipment/add">
+                    <a-button type="primary" style="margin: 8px; " ghost>添加设备</a-button>
+                </router-link>
+            </a-row>
+            <a-table bordered :data-source="dataSource" :columns="columns">
+                <template #bodyCell="{ column, text, record }">
+                    <template v-if="column.dataIndex === 'name'">
+                        <div class="editable-cell">
+                            <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
+                                <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)"/>
+                                <check-outlined class="editable-cell-icon-check" @click="save(record.key)"/>
+                            </div>
+                            <div v-else class="editable-cell-text-wrapper">
+                                {{ text || ' ' }}
+                                <edit-outlined class="editable-cell-icon" @click="edit(record.key)"/>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-else-if="column.dataIndex === 'operation'">
+                        <div class="editable-row-operations">
+                            <span>
+                              <a>编辑</a>
+                            </span>
+                            <span>
+                              <a>出借历史</a>
+                            </span>
+                            <span>
+                              <a-popconfirm
+                                    v-if="dataSource.length"
+                                    title="是否删除?"
+                                    @confirm="onDelete(record.key)"
+                            >
+                                <a style="color:red;">删除</a>
+                              </a-popconfirm>
+                        </span>
+                        </div>
+                    </template>
+                </template>
+            </a-table>
+        </div>
+        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false">
+            管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
+        </div>
+
+    </a-layout-content>
+
+</template>
+
 <style lang="less">
 .editable-row-operations a {
   margin-right: 8px;

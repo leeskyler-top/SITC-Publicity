@@ -1,3 +1,24 @@
+<script setup>
+import {CalendarOutlined ,DashboardOutlined, ToolOutlined, UserOutlined, LockOutlined, CarryOutOutlined, FileOutlined} from '@ant-design/icons-vue';
+import {ref, computed, reactive} from 'vue';
+const formState = reactive({
+    username: '',
+    password: '',
+});
+const onFinish = values => {
+    console.log('Success:', values);
+};
+const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+};
+const disabled = computed(() => {
+    return !(formState.username && formState.password);
+});
+
+const collapsed = ref(true);
+const selectedKeys = ref(['1']);
+
+</script>
 <template>
     <div v-if="false" class="login">
         <a-form
@@ -165,28 +186,6 @@
     </div>
 
 </template>
-
-<script setup>
-import {CalendarOutlined ,DashboardOutlined, ToolOutlined, UserOutlined, LockOutlined, CarryOutOutlined, FileOutlined} from '@ant-design/icons-vue';
-import {ref, computed, reactive} from 'vue';
-const formState = reactive({
-    username: '',
-    password: '',
-});
-const onFinish = values => {
-    console.log('Success:', values);
-};
-const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
-};
-const disabled = computed(() => {
-    return !(formState.username && formState.password);
-});
-
-const collapsed = ref(true);
-const selectedKeys = ref(['1']);
-
-</script>
 
 <style>
 #components-layout-demo-side .logo {

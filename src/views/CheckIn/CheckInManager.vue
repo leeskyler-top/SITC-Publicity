@@ -1,115 +1,3 @@
-<template>
-    <a-layout-content
-            :style="{margin: '16px'}"
-    >
-        <h2>签到管理</h2>
-        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow" >
-            <a-row justify="end">
-                <router-link to="/activity/add">
-                    <a-button type="primary" style="margin: 8px; " ghost>新建签到</a-button>
-                </router-link>
-            </a-row>
-            <a-table bordered :data-source="dataSource" :columns="columns">
-                <template #bodyCell="{ column, text, record }">
-                    <template v-if="column.dataIndex === 'operation'">
-                        <div class="editable-row-operations">
-                            <span>
-                              <a @click="edit(record.id)">编辑</a>
-                            </span>
-                            <span>
-                              <a @click="showInfo(record.id)">详情</a>
-                            </span>
-                            <span>
-                              <a-popconfirm
-                                      v-if="dataSource.length"
-                                      title="是否删除?"
-                                      @confirm="onDelete(record.key)"
-                              >
-                                <a style="color:red;">删除</a>
-                              </a-popconfirm>
-                        </span>
-                        </div>
-                    </template>
-                </template>
-            </a-table>
-        </div>
-        <a-modal v-model:visible="visibleInfo" title="签到情况">
-            <a-card>
-                <a-descriptions v-for="item in data" title="姓名"
-                                layout="vertical">
-
-                    <a-descriptions-item label="签到时间">2023-06-03 21:09</a-descriptions-item>
-                    <a-descriptions-item label="签到状态">demo</a-descriptions-item>
-                    <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
-                        <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger @click="showConfirm(item.id)">驳回</a-button>
-                        <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;" @click="showPhotos(item.id)">查看照片</a-button>
-                    </a-descriptions-item>
-                </a-descriptions>
-            </a-card>
-        </a-modal>
-        <a-modal v-model:visible="visibleEdit" title="变更活动信息">
-
-            <a-form
-                :model="formState"
-                name="validate_other"
-                v-bind="formItemLayout"
-                :validate-messages="validateMessages"
-                @finishFailed="onFinishFailed"
-                @finish="onFinish"
-                style="max-width: 500px;"
-
-            >
-                <a-form-item :name="['activity', 'title']" label="活动标题" :rules="[{ required: true }]">
-                    <a-input v-model:value="formState.activity.title"/>
-                </a-form-item>
-                <a-form-item :name="['activity', 'notes']" label="签到名称" :rules="[{ required: true }]">
-                    <a-textarea v-model:value="formState.activity.notes"/>
-                </a-form-item>
-                <a-form-item has-feedback
-                             :rules="[{ required: true, message: '请选择日期' }]"
-                             v-model:value="formState.activity.start_datetime" name="date-time-picker" label="开始时间">
-                    <a-date-picker
-                        v-model:value="formState['date-time-picker']"
-                        show-time
-                        format="YYYY-MM-DD HH:mm:ss"
-                        value-format="YYYY-MM-DD HH:mm:ss"
-                        placeholder="不得早于当前时间"
-                    />
-                </a-form-item>
-                <a-form-item has-feedback
-                             :rules="[{ required: true, message: '请选择日期' }]"
-                             v-model:value="formState.activity.end_datetime" name="date-time-picker" label="结束时间">
-                    <a-date-picker
-                        v-model:value="formState['date-time-picker']"
-                        show-time
-                        format="YYYY-MM-DD HH:mm:ss"
-                        value-format="YYYY-MM-DD HH:mm:ss"
-                        placeholder="不得早于当前时间"
-                    />
-                </a-form-item>
-
-                <template #footer>
-                    <a-button type="primary" @click="handleCancel">关闭</a-button>
-                    <a-button type="primary" danger>变更</a-button>
-                </template>
-            </a-form>
-        </a-modal>
-        <a-modal  v-model:visible="visiblePhotos" >
-            <a-image-preview-group >
-                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
-                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
-            </a-image-preview-group>
-            <template #footer>
-                <a-button type="primary" @click="handlePhotosCancel">OK</a-button>
-            </template>
-        </a-modal>
-        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
-            管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
-        </div>
-
-    </a-layout-content>
-
-</template>
 <script setup>
 import {reactive, ref, onMounted, createVNode} from 'vue';
 import {cloneDeep} from 'lodash-es';
@@ -288,6 +176,119 @@ const showConfirm = (id) => {
 }
 
 </script>
+<template>
+    <a-layout-content
+            :style="{margin: '16px'}"
+    >
+        <h2>签到管理</h2>
+        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow" >
+            <a-row justify="end">
+                <router-link to="/activity/add">
+                    <a-button type="primary" style="margin: 8px; " ghost>新建签到</a-button>
+                </router-link>
+            </a-row>
+            <a-table bordered :data-source="dataSource" :columns="columns">
+                <template #bodyCell="{ column, text, record }">
+                    <template v-if="column.dataIndex === 'operation'">
+                        <div class="editable-row-operations">
+                            <span>
+                              <a @click="edit(record.id)">编辑</a>
+                            </span>
+                            <span>
+                              <a @click="showInfo(record.id)">详情</a>
+                            </span>
+                            <span>
+                              <a-popconfirm
+                                      v-if="dataSource.length"
+                                      title="是否删除?"
+                                      @confirm="onDelete(record.key)"
+                              >
+                                <a style="color:red;">删除</a>
+                              </a-popconfirm>
+                        </span>
+                        </div>
+                    </template>
+                </template>
+            </a-table>
+        </div>
+        <a-modal v-model:visible="visibleInfo" title="签到情况">
+            <a-card>
+                <a-descriptions v-for="item in data" title="姓名"
+                                layout="vertical">
+
+                    <a-descriptions-item label="签到时间">2023-06-03 21:09</a-descriptions-item>
+                    <a-descriptions-item label="签到状态">demo</a-descriptions-item>
+                    <a-descriptions-item label="操作" style="display:flex; gap: 4px;">
+                        <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" danger @click="showConfirm(item.id)">驳回</a-button>
+                        <a-button type="primary" style="padding-top: 5px; box-sizing: border-box; margin-left: 5px;" @click="showPhotos(item.id)">查看照片</a-button>
+                    </a-descriptions-item>
+                </a-descriptions>
+            </a-card>
+        </a-modal>
+        <a-modal v-model:visible="visibleEdit" title="变更活动信息">
+
+            <a-form
+                :model="formState"
+                name="validate_other"
+                v-bind="formItemLayout"
+                :validate-messages="validateMessages"
+                @finishFailed="onFinishFailed"
+                @finish="onFinish"
+                style="max-width: 500px;"
+
+            >
+                <a-form-item :name="['activity', 'title']" label="活动标题" :rules="[{ required: true }]">
+                    <a-input v-model:value="formState.activity.title"/>
+                </a-form-item>
+                <a-form-item :name="['activity', 'notes']" label="签到名称" :rules="[{ required: true }]">
+                    <a-textarea v-model:value="formState.activity.notes"/>
+                </a-form-item>
+                <a-form-item has-feedback
+                             :rules="[{ required: true, message: '请选择日期' }]"
+                             v-model:value="formState.activity.start_datetime" name="date-time-picker" label="开始时间">
+                    <a-date-picker
+                        v-model:value="formState['date-time-picker']"
+                        show-time
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="不得早于当前时间"
+                    />
+                </a-form-item>
+                <a-form-item has-feedback
+                             :rules="[{ required: true, message: '请选择日期' }]"
+                             v-model:value="formState.activity.end_datetime" name="date-time-picker" label="结束时间">
+                    <a-date-picker
+                        v-model:value="formState['date-time-picker']"
+                        show-time
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="不得早于当前时间"
+                    />
+                </a-form-item>
+
+                <template #footer>
+                    <a-button type="primary" @click="handleCancel">关闭</a-button>
+                    <a-button type="primary" danger>变更</a-button>
+                </template>
+            </a-form>
+        </a-modal>
+        <a-modal  v-model:visible="visiblePhotos" >
+            <a-image-preview-group >
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
+            </a-image-preview-group>
+            <template #footer>
+                <a-button type="primary" @click="handlePhotosCancel">OK</a-button>
+            </template>
+        </a-modal>
+        <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false" >
+            管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
+        </div>
+
+    </a-layout-content>
+
+</template>
+
 <style scoped>
 .editable-row-operations a {
     margin-right: 8px;

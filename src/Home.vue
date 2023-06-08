@@ -1,3 +1,12 @@
+<script setup>
+import { ref } from 'vue';
+const activeKey = ref([]);
+const text = `A dog is a type of domesticated animal.Known for its loyalty and faithfulness,it can be found as a welcome guest in many households across the world.`;
+const changeActivekey = key => {
+    console.log(key);
+};
+</script>
+
 <template>
 
     <a-layout-content
@@ -67,14 +76,7 @@
 
 
 </template>
-<script setup>
-import { ref } from 'vue';
-const activeKey = ref([]);
-const text = `A dog is a type of domesticated animal.Known for its loyalty and faithfulness,it can be found as a welcome guest in many households across the world.`;
-const changeActivekey = key => {
-    console.log(key);
-};
-</script>
+
 <style>
 
 </style>

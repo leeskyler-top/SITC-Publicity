@@ -4,25 +4,75 @@ import {Modal} from "ant-design-vue";
 import {Empty} from "ant-design-vue";
 import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
 
-const data = [];
+const data_apply = [];
+const data_back = [];
+const data_report = [];
+
+const activeKey = ref('1');
 
 for (let i = 1; i < 2; i++) {
-    data.push(    {
-        fixed_assets_num: 'TY20220800001',
-        name: '惠普Z2工作站',
-        model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
-        apply_uid: '22200001',
-        apply_name: 'Demo Demo',
-        apply_time: "2023-05-31 09:00:00"
-    },
-    {
-        fixed_assets_num: 'TY20220800002',
-        name: '惠普Z2工作站',
-        model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
-        apply_uid: '22200001',
-        apply_name: 'Demo Demo',
-        apply_time: "2023-05-31 09:00:00"
-    })
+    data_back.push({
+            fixed_assets_num: 'TY20220800001',
+            name: '惠普Z2工作站',
+            model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+            apply_uid: '22200001',
+            apply_name: 'Demo Demo',
+            audit_uid: '22200001',
+            audit_name: 'Demo Demo',
+            back_time: "2023-05-31 09:00:00",
+            audit_time: "2023-05-31 09:00:00"
+        },
+        {
+            fixed_assets_num: 'TY20220800002',
+            name: '惠普Z2工作站',
+            model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+            apply_uid: '22200001',
+            apply_name: 'Demo Demo',
+            audit_uid: '22200001',
+            audit_name: 'Demo Demo',
+            back_time: "2023-05-31 09:00:00",
+            audit_time: "2023-05-31 09:00:00"
+        })
+    data_apply.push({
+            fixed_assets_num: 'TY20220800001',
+            name: '惠普Z2工作站',
+            model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+            apply_uid: '22200001',
+            apply_name: 'Demo Demo',
+            apply_time: "2023-05-31 09:00:00"
+        },
+        {
+            fixed_assets_num: 'TY20220800002',
+            name: '惠普Z2工作站',
+            model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+            apply_uid: '22200001',
+            apply_name: 'Demo Demo',
+            apply_time: "2023-05-31 09:00:00"
+        })
+    data_report.push(    {
+            fixed_assets_num: 'TY20220800001',
+            name: '惠普Z2工作站',
+            model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+            apply_uid: '22200001',
+            apply_name: 'Demo Demo',
+            audit_uid: '22200001',
+            audit_name: 'Demo Demo',
+            report_time: "2023-05-31 09:00:00",
+            audit_time: "2023-05-31 09:00:00",
+            type: "损坏"
+        },
+        {
+            fixed_assets_num: 'TY20220800002',
+            name: '惠普Z2工作站',
+            model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+            apply_uid: '22200001',
+            apply_name: 'Demo Demo',
+            audit_uid: '22200001',
+            audit_name: 'Demo Demo',
+            back_time: "2023-05-31 09:00:00",
+            audit_time: "2023-05-31 09:00:00",
+            type: "丢失"
+        })
 }
 
 const current = ref(1);
@@ -82,43 +132,122 @@ const showConfirm = (op) => {
         <h2>
             设备申请审核
         </h2>
-        <a-descriptions-item v-if="data.length === 0">
-            <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <a-empty :image="Empty.PRESENTED_IMAGE_SIMPLE" style="width: 100%;  "/>
-            </div>
-        </a-descriptions-item>
-        <a-space direction="vertical" :size="5" style="height: 100%">
-
-            <a-descriptions v-for="item in data" title="借条"
-                            style="background-color: #FFFFFF; padding: 16px; box-sizing: border-box;">
-                <a-descriptions-item label="设备ID">{{ item.fixed_assets_num }}</a-descriptions-item>
-                <a-descriptions-item label="设备名称">{{ item.name }}</a-descriptions-item>
-                <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
-                <a-descriptions-item label="申请人学籍号">{{ item.apply_uid }}</a-descriptions-item>
-                <a-descriptions-item label="申请人姓名">{{ item.apply_name }}</a-descriptions-item>
-                <a-descriptions-item label="承诺归还时间">{{ item.apply_time }}</a-descriptions-item>
-                <a-descriptions-item label="操作">
-                    <a-row style="gap: 5px;">
-                        <a-col>
-                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showPhotos(item.id)">查看照片</a-button>
-                        </a-col>
-                        <a-col>
-                            <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;" @click="showConfirm('agree')">同意</a-button>
-                        </a-col>
-                        <a-col>
-                            <a-button danger style="padding-top: 5px; box-sizing: border-box;" @click="showConfirm('refuse')">拒绝</a-button>
-                        </a-col>
-                    </a-row>
+        <a-tabs v-model:activeKey="activeKey" type="card">
+            <a-tab-pane key="1" tab="申请">
+                <a-descriptions-item v-if="data_apply.length === 0">
+                    <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <a-empty :image="Empty.PRESENTED_IMAGE_SIMPLE" style="width: 100%;  "/>
+                    </div>
                 </a-descriptions-item>
+                <a-space direction="vertical" :size="5" style="height: 100%">
 
-            </a-descriptions>
-            <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
-                          :total="data.length" v-if="data.length !== 0"/>
-        </a-space>
-        <a-modal  v-model:visible="visiblePhotos" >
-            <a-image-preview-group >
-                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />
-                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png" />
+                    <a-descriptions v-for="item in data_apply" title="借条"
+                                    style="background-color: #FFFFFF; padding: 16px; box-sizing: border-box;">
+                        <a-descriptions-item label="设备ID">{{ item.fixed_assets_num }}</a-descriptions-item>
+                        <a-descriptions-item label="设备名称">{{ item.name }}</a-descriptions-item>
+                        <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
+                        <a-descriptions-item label="申请人学籍号">{{ item.apply_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="申请人姓名">{{ item.apply_name }}</a-descriptions-item>
+                        <a-descriptions-item label="承诺归还时间">{{ item.apply_time }}</a-descriptions-item>
+                        <a-descriptions-item label="操作">
+                            <a-row style="gap: 5px;">
+                                <a-col>
+                                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;"
+                                              @click="showPhotos(item.id)">查看照片
+                                    </a-button>
+                                </a-col>
+                                <a-col>
+                                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;"
+                                              @click="showConfirm('agree')">同意
+                                    </a-button>
+                                </a-col>
+                                <a-col>
+                                    <a-button danger style="padding-top: 5px; box-sizing: border-box;"
+                                              @click="showConfirm('refuse')">拒绝
+                                    </a-button>
+                                </a-col>
+                            </a-row>
+                        </a-descriptions-item>
+
+                    </a-descriptions>
+                    <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
+                                  :total="data_apply.length" v-if="data_apply.length !== 0"/>
+                </a-space>
+            </a-tab-pane>
+            <a-tab-pane key="2" tab="归还申报查看">
+                <a-descriptions-item v-if="data_back.length === 0">
+                    <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <a-empty :image="Empty.PRESENTED_IMAGE_SIMPLE" style="width: 100%;  "/>
+                    </div>
+                </a-descriptions-item>
+                <a-space direction="vertical" :size="5" style="height: 100%">
+
+                    <a-descriptions v-for="item in data_back" title="归还情况"
+                                    style="background-color: #FFFFFF; padding: 16px; box-sizing: border-box;">
+                        <a-descriptions-item label="设备ID">{{ item.fixed_assets_num }}</a-descriptions-item>
+                        <a-descriptions-item label="设备名称">{{ item.name }}</a-descriptions-item>
+                        <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
+                        <a-descriptions-item label="申请人学籍号">{{ item.apply_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="申请人姓名">{{ item.apply_name }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人学籍号">{{ item.audit_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人姓名">{{ item.audit_name }}</a-descriptions-item>
+                        <a-descriptions-item label="审批时间">{{ item.audit_time }}</a-descriptions-item>
+                        <a-descriptions-item label="归还时间">{{ item.back_time }}</a-descriptions-item>
+                        <a-descriptions-item label="操作">
+                            <a-row style="gap: 5px;">
+                                <a-col>
+                                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;"
+                                              @click="showPhotos(item.id)">查看照片
+                                    </a-button>
+                                </a-col>
+                            </a-row>
+                        </a-descriptions-item>
+
+                    </a-descriptions>
+                    <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
+                                  :total="data_back.length" v-if="data_back.length !== 0"/>
+                </a-space>
+            </a-tab-pane>
+            <a-tab-pane key="3" tab="异常报告">
+                <a-descriptions-item v-if="data_report.length === 0">
+                    <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <a-empty :image="Empty.PRESENTED_IMAGE_SIMPLE" style="width: 100%;  "/>
+                    </div>
+                </a-descriptions-item>
+                <a-space direction="vertical" :size="5" style="height: 100%">
+
+                    <a-descriptions v-for="item in data_report" title="异常报告"
+                                    style="background-color: #FFFFFF; padding: 16px; box-sizing: border-box;">
+                        <a-descriptions-item label="设备ID">{{ item.fixed_assets_num }}</a-descriptions-item>
+                        <a-descriptions-item label="设备名称">{{ item.name }}</a-descriptions-item>
+                        <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
+                        <a-descriptions-item label="申请人学籍号">{{ item.apply_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="申请人姓名">{{ item.apply_name }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人学籍号">{{ item.audit_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人姓名">{{ item.audit_name }}</a-descriptions-item>
+                        <a-descriptions-item label="审批时间">{{ item.audit_time }}</a-descriptions-item>
+                        <a-descriptions-item label="报告时间">{{ item.report_time }}</a-descriptions-item>
+                        <a-descriptions-item label="情况">{{ item.type }}</a-descriptions-item>
+                        <a-descriptions-item label="操作" v-if="item.type === '损坏'">
+                            <a-row style="gap: 5px;">
+                                <a-col>
+                                    <a-button type="primary" style="padding-top: 5px; box-sizing: border-box;"
+                                              @click="showPhotos(item.id)">查看照片
+                                    </a-button>
+                                </a-col>
+                            </a-row>
+                        </a-descriptions-item>
+
+                    </a-descriptions>
+                    <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
+                                  :total="data_report.length" v-if="data_report.length !== 0"/>
+                </a-space>
+            </a-tab-pane>
+        </a-tabs>
+        <a-modal v-model:visible="visiblePhotos">
+            <a-image-preview-group>
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png"/>
+                <a-image :width="200" src="https://aliyuncdn.antdv.com/logo.png"/>
             </a-image-preview-group>
             <template #footer>
                 <a-button type="primary" @click="handleCancel">OK</a-button>

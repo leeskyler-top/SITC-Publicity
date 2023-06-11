@@ -18,15 +18,54 @@ for (let i = 1; i < 2; i++) {
         model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
         created_at: '2023-05-19 14:43:00',
         apply_time: '2023-05-19 14:43:00',
+        audit_time: '2023-05-19 14:43:00',
+        audit_uid: '22100001',
+        audit_name: 'Demo',
         status: "出借"
     });
-    data.push({
+    data_apply.push({
+        fixed_assets_num: "TY20220800001",
+        name: '惠普Z2工作站',
+        model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+        created_at: '2023-05-19 14:43:00',
+        apply_time: '2023-05-19 14:43:00',
+        audit_time: '2023-05-19 14:43:00',
+        audit_uid: '22100001',
+        audit_name: 'Demo',
+        status: "申请中"
+    });
+    data_reject.push({
         fixed_assets_num: "TY20220800002",
         name: '惠普Z2工作站',
         model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
         created_at: '2023-05-19 14:43:00',
         apply_time: '2023-05-19 14:43:00',
+        audit_time: '2023-05-19 14:43:00',
+        audit_uid: '22100001',
+        audit_name: 'Demo',
         status: "已拒绝"
+    });
+    data_back.push({
+        fixed_assets_num: "TY20220800002",
+        name: '惠普Z2工作站',
+        model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+        created_at: '2023-05-19 14:43:00',
+        apply_time: '2023-05-19 14:43:00',
+        audit_time: '2023-05-19 14:43:00',
+        audit_uid: '22100001',
+        audit_name: 'Demo',
+        status: "已归还"
+    });
+    data_report.push({
+        fixed_assets_num: "TY20220800002",
+        name: '惠普Z2工作站',
+        model: 'Tower G5 ( Intel i9 10900K, Nvidia Quadro P2200, 32G, 1T SSD )',
+        created_at: '2023-05-19 14:43:00',
+        apply_time: '2023-05-19 14:43:00',
+        audit_time: '2023-05-19 14:43:00',
+        audit_uid: '22100001',
+        audit_name: 'Demo',
+        status: "损坏"
     });
 }
 
@@ -137,6 +176,9 @@ const handleCancel = () => {
                         <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
                         <a-descriptions-item label="申请时间">{{ item.created_at }}</a-descriptions-item>
                         <a-descriptions-item label="承诺归还时间">{{ item.apply_time }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人学籍号">{{ item.audit_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人姓名">{{ item.audit_name }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人时间">{{ item.audit_time }}</a-descriptions-item>
                         <a-descriptions-item label="状态">{{ item.status }}</a-descriptions-item>
                         <a-descriptions-item label="操作" v-if="item.status === '出借'">
                             <a-row style="gap: 5px;">
@@ -172,6 +214,9 @@ const handleCancel = () => {
                         <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
                         <a-descriptions-item label="申请时间">{{ item.created_at }}</a-descriptions-item>
                         <a-descriptions-item label="承诺归还时间">{{ item.apply_time }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人学籍号">{{ item.audit_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人姓名">{{ item.audit_name }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人时间">{{ item.audit_time }}</a-descriptions-item>
                         <a-descriptions-item label="状态">{{ item.status }}</a-descriptions-item>
 
                     </a-descriptions>
@@ -194,6 +239,9 @@ const handleCancel = () => {
                         <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
                         <a-descriptions-item label="申请时间">{{ item.created_at }}</a-descriptions-item>
                         <a-descriptions-item label="承诺归还时间">{{ item.apply_time }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人学籍号">{{ item.audit_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人姓名">{{ item.audit_name }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人时间">{{ item.audit_time }}</a-descriptions-item>
                         <a-descriptions-item label="状态">{{ item.status }}</a-descriptions-item>
 
                     </a-descriptions>
@@ -207,6 +255,24 @@ const handleCancel = () => {
                         <a-empty :image="Empty.PRESENTED_IMAGE_SIMPLE" style="width: 100%;  "/>
                     </div>
                 </a-descriptions-item>
+                <a-space direction="vertical" :size="5" style="height: 100%">
+
+                    <a-descriptions v-for="item in data_reject" title="驳回通知"
+                                    style="background-color: #FFFFFF; padding: 16px; box-sizing: border-box;">
+                        <a-descriptions-item label="固定资产编号">{{ item.fixed_assets_num }}</a-descriptions-item>
+                        <a-descriptions-item label="设备名称">{{ item.name }}</a-descriptions-item>
+                        <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
+                        <a-descriptions-item label="申请时间">{{ item.created_at }}</a-descriptions-item>
+                        <a-descriptions-item label="承诺归还时间">{{ item.apply_time }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人学籍号">{{ item.audit_uid }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人姓名">{{ item.audit_name }}</a-descriptions-item>
+                        <a-descriptions-item label="审批人时间">{{ item.audit_time }}</a-descriptions-item>
+                        <a-descriptions-item label="状态">{{ item.status }}</a-descriptions-item>
+
+                    </a-descriptions>
+                    <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
+                                  :total="data_reject.length" v-if="data_reject.length !== 0"/>
+                </a-space>
                 <a-space direction="vertical" :size="5" style="height: 100%">
 
                     <a-descriptions v-for="item in data_back" title="归还情况"
@@ -229,6 +295,24 @@ const handleCancel = () => {
                                 </a-col>
                             </a-row>
                         </a-descriptions-item>
+                        <a-space direction="vertical" :size="5" style="height: 100%">
+
+                            <a-descriptions v-for="item in data_reject" title="驳回通知"
+                                            style="background-color: #FFFFFF; padding: 16px; box-sizing: border-box;">
+                                <a-descriptions-item label="固定资产编号">{{ item.fixed_assets_num }}</a-descriptions-item>
+                                <a-descriptions-item label="设备名称">{{ item.name }}</a-descriptions-item>
+                                <a-descriptions-item label="设备型号">{{ item.model }}</a-descriptions-item>
+                                <a-descriptions-item label="申请时间">{{ item.created_at }}</a-descriptions-item>
+                                <a-descriptions-item label="承诺归还时间">{{ item.apply_time }}</a-descriptions-item>
+                                <a-descriptions-item label="审批人学籍号">{{ item.audit_uid }}</a-descriptions-item>
+                                <a-descriptions-item label="审批人姓名">{{ item.audit_name }}</a-descriptions-item>
+                                <a-descriptions-item label="审批人时间">{{ item.audit_time }}</a-descriptions-item>
+                                <a-descriptions-item label="状态">{{ item.status }}</a-descriptions-item>
+
+                            </a-descriptions>
+                            <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
+                                          :total="data_reject.length" v-if="data_reject.length !== 0"/>
+                        </a-space>
                     </a-descriptions>
                     <a-pagination align="center" style="margin-top: 8px;" v-model:current="current" simple pageSize="5"
                                   :total="data_back.length" v-if="data_back.length !== 0"/>

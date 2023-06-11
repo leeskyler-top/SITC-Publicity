@@ -281,6 +281,7 @@ const onFinishFailed = errorInfo => {
 
 const handleCancel = () => {
     visible.value = false;
+    visiblePassword.value = false;
 };
 
 </script>

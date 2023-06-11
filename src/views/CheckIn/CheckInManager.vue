@@ -282,6 +282,58 @@ const showConfirm = (id) => {
                 </template>
             </a-form>
         </a-modal>
+        <a-modal v-model:visible="visibleEdit" title="编辑">
+
+            <a-form
+                :model="formState.checkIn"
+                name="validate_other"
+                v-bind="formItemLayout"
+                :validate-messages="validateMessages"
+                @finishFailed="onFinishFailed"
+                @finish="onFinish"
+                style="max-width: 500px;"
+
+            >
+                <a-form-item
+                    name="activity_id"
+                    label="已绑定的活动"
+                    has-feedback
+                >
+                    <a-select v-model:value="formState.checkIn.activity_id" placeholder="绑定的活动" disabled>
+                        <a-select-option value="1">Demo 1</a-select-option>
+                        <a-select-option value="2">Demo 2</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item name="name" label="签到名称" :rules="[{ required: true }]">
+                    <a-input v-model:value="formState.checkIn.name"/>
+                </a-form-item>
+                <a-form-item has-feedback
+                             :rules="[{ required: true, message: '请选择日期' }]" name="start_datetime" label="开始时间">
+                    <a-date-picker
+                        v-model:value="formState.checkIn.start_datetime"
+                        show-time
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="不得早于当前时间"
+                    />
+                </a-form-item>
+                <a-form-item has-feedback
+                             :rules="[{ required: true, message: '请选择日期' }]" name="end_datetime" label="结束时间">
+                    <a-date-picker
+                        v-model:value="formState.checkIn.end_datetime"
+                        show-time
+                        format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="不得早于当前时间"
+                    />
+                </a-form-item>
+
+                <template #footer>
+                    <a-button type="primary" @click="handleCancel">关闭</a-button>
+                    <a-button type="primary" danger>变更</a-button>
+                </template>
+            </a-form>
+        </a-modal>
         <a-modal  v-model:visible="visiblePhotos" >
             <a-image-preview-group >
                 <a-image :width="200" src="https://aliyuncdn.antdv.com/vue.png" />

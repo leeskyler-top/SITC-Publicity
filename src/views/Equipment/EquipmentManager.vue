@@ -1,6 +1,6 @@
 <script setup>
 import {computed, defineComponent, onMounted, reactive, ref} from 'vue';
-import {CheckOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons-vue';
+import {CheckOutlined, EditOutlined, PlusOutlined, UploadOutlined} from '@ant-design/icons-vue';
 import {cloneDeep} from 'lodash-es';
 
 /*
@@ -8,7 +8,7 @@ import {cloneDeep} from 'lodash-es';
  */
 const isShow = ref(true);
 
-function handleResize (event) {
+function handleResize(event) {
     // 页面宽度小于525px时，不显示表格
     if (document.documentElement.clientWidth < 525) {
         isShow.value = false;
@@ -127,12 +127,14 @@ const dataSource = ref([
 ]);
 const count = computed(() => dataSource.value.length + 1);
 const editableData = reactive({});
-const edit = key => {
-    editableData[key] = cloneDeep(dataSource.value.filter(item => key === item.key)[0]);
-};
-const save = key => {
-    Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
-    delete editableData[key];
+
+const visibleInfo = ref(false);
+const showInfo = id => {
+    visibleInfo.value = true;
+}
+
+const handleCancel = () => {
+    visibleInfo.value = false;
 };
 const onDelete = key => {
     dataSource.value = dataSource.value.filter(item => item.key !== key);
@@ -146,6 +148,29 @@ const handleAdd = () => {
     };
     dataSource.value.push(newData);
 };
+
+const formState = reactive({
+    equipment: {
+        fixed_assets_num: '',
+        name: '',
+        model: '',
+        status: 'unassigned',
+    },
+});
+
+const validateMessages = {
+    required: '${label} 必填!',
+    types: {
+        email: '${label} 非法邮箱格式',
+    },
+};
+const onFinish = values => {
+    console.log('Success:', values);
+};
+const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+};
+
 
 </script>
 <template>
@@ -163,30 +188,22 @@ const handleAdd = () => {
                 <template #bodyCell="{ column, text, record }">
                     <template v-if="column.dataIndex === 'name'">
                         <div class="editable-cell">
-                            <div v-if="editableData[record.key]" class="editable-cell-input-wrapper">
-                                <a-input v-model:value="editableData[record.key].name" @pressEnter="save(record.key)"/>
-                                <check-outlined class="editable-cell-icon-check" @click="save(record.key)"/>
-                            </div>
-                            <div v-else class="editable-cell-text-wrapper">
+                            <div class="editable-cell-text-wrapper">
                                 {{ text || ' ' }}
-                                <edit-outlined class="editable-cell-icon" @click="edit(record.key)"/>
                             </div>
                         </div>
                     </template>
-                    <template v-else-if="column.dataIndex === 'operation'">
+                    <template v-if="column.dataIndex === 'operation'">
                         <div class="editable-row-operations">
                             <span>
-                              <a>编辑</a>
-                            </span>
-                            <span>
-                              <a>出借历史</a>
+                              <a @click="showInfo(record.key)">编辑</a>
                             </span>
                             <span>
                               <a-popconfirm
-                                    v-if="dataSource.length"
-                                    title="是否删除?"
-                                    @confirm="onDelete(record.key)"
-                            >
+                                      v-if="dataSource.length"
+                                      title="是否删除?"
+                                      @confirm="onDelete(record.key)"
+                              >
                                 <a style="color:red;">删除</a>
                               </a-popconfirm>
                         </span>
@@ -198,6 +215,67 @@ const handleAdd = () => {
         <div style="padding: 8px; background-color: #FFFFFF" v-if="isShow === false">
             管理员相关功能不支持宽度小于525px的设备显示，建议使用电脑端操作。
         </div>
+        <a-modal v-model:visible="visibleInfo" title="变更活动信息">
+
+            <a-form
+                    :model="formState.equipment"
+                    name="validate_other"
+                    v-bind="formItemLayout"
+                    :validate-messages="validateMessages"
+                    @finishFailed="onFinishFailed"
+                    @finish="onFinish"
+                    style="max-width: 500px;"
+
+            >
+                <a-form-item name="fixed_assets_num" label="固定资产编号" :rules="[{ required: true }]">
+                    <a-input v-model:value="formState.equipment.fixed_assets_num"/>
+                </a-form-item>
+                <a-form-item name="name" label="设备名称" :rules="[{ required: true }]">
+                    <a-textarea v-model:value="formState.equipment.name"/>
+                </a-form-item>
+                <a-form-item name="model" label="设备型号" :rules="[{ required: true }]">
+                    <a-input v-model:value="formState.equipment.model"/>
+                </a-form-item>
+                <a-form-item
+                        name="status"
+                        label="状态"
+                        has-feedback
+                        :rules="[{ required: true, message: '状态' }]"
+                >
+                    <a-select placeholder="选择状态" v-model:value="formState.equipment.status">
+                        <a-select-option value="unassigned">空闲</a-select-option>
+                        <a-select-option value="assigned">出借</a-select-option>
+                        <a-select-option value="damaged">损坏</a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item
+                        name="person"
+                        label="出借者"
+                        has-feedback
+                        :rules="[{ required: true, message: '状态' }]"
+                        v-if="formState.equipment.status === 'assigned'">
+                    <a-select v-model:value="formState.equipment.person" style="width: 200px" @change="handleChange">
+                        <a-select-opt-group>
+                            <template #label>
+                                  <span>
+                                    <user-outlined/>Manager
+                                  </span>
+                            </template>
+                            <a-select-option value="jack">Jack</a-select-option>
+                            <a-select-option value="lucy">Lucy</a-select-option>
+                        </a-select-opt-group>
+                        <a-select-opt-group label="Engineer">
+                            <a-select-option value="Yiminghe">yiminghe</a-select-option>
+                            <a-select-option value="Yiminghe1">yiminghe1</a-select-option>
+                        </a-select-opt-group>
+                    </a-select>
+                </a-form-item>
+            </a-form>
+            <template #footer>
+                <a-button type="primary" @click="handleCancel">关闭</a-button>
+                <a-button type="primary" @click="changeNote" html-type="submit" danger>变更</a-button>
+            </template>
+        </a-modal>
 
     </a-layout-content>
 
@@ -207,6 +285,7 @@ const handleAdd = () => {
 .editable-row-operations a {
   margin-right: 8px;
 }
+
 .editable-cell {
   position: relative;
 
